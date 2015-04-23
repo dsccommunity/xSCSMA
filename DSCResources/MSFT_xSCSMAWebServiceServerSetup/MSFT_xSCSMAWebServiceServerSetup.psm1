@@ -263,7 +263,14 @@ function Set-TargetResource
                 {
                     Set-Variable -Name $ArgumentVar -Value "No"
                 }
-
+            }
+            if([String]::IsNullOrEmpty($AdminGroupMembers))
+            {
+                $AdminGroupMembers = $ApPool.UserName
+            }
+            else
+            {
+                $AdminGroupMembers = "$AdminGroupMembers,$($ApPool.UserName)"
             }
 
             $MSIPath = Join-Path -Path (Join-Path -Path $SourcePath -ChildPath $SourceFolder) -ChildPath "\SMA\WebServiceInstaller.msi"
@@ -294,7 +301,7 @@ function Set-TargetResource
             )
             if($SQLInstance -ne "MSSQLSERVER")
             {
-                $ArgumentVars = @(
+                $ArgumentVars += @(
                     "SqlInstance"
                 )
             }
@@ -475,4 +482,3 @@ function Test-TargetResource
 
 
 Export-ModuleMember -Function *-TargetResource
-

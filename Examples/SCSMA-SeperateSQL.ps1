@@ -303,7 +303,12 @@ $ConfigurationData = @{
             NodeName = "SMA01.contoso.com"
             Roles = @(
                 "System Center 2012 R2 Service Management Automation Web Service Server",
-                "System Center 2012 R2 Service Management Automation Runbook Worker Server",
+                "System Center 2012 R2 Service Management Automation Runbook Worker Server"
+            )
+        }
+        @{
+            NodeName = "RD01.contoso.com"
+            Roles = @(
                 "SQL Server 2012 Management Tools"
             )
         }

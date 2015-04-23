@@ -24,4 +24,3 @@ class MSFT_xSCSMAWebServiceServerSetup : OMI_BaseResource
     [Write, Description("Product key for licensed installations.")] String ProductKey;
     [Write, Description("Array of Runbook Worker servers in this deployment.")] String RunbookWorkerServers[];
 };
-

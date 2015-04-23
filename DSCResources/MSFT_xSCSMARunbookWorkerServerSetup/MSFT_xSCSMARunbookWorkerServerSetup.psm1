@@ -227,7 +227,7 @@ function Set-TargetResource
             )
             if($SQLInstance -ne "MSSQLSERVER")
             {
-                $ArgumentVars = @(
+                $ArgumentVars += @(
                     "SqlInstance"
                 )
             }
@@ -344,4 +344,3 @@ function Test-TargetResource
 
 
 Export-ModuleMember -Function *-TargetResource
-

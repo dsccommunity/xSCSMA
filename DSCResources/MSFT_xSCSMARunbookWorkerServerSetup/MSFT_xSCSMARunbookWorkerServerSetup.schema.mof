@@ -16,4 +16,3 @@ class MSFT_xSCSMARunbookWorkerServerSetup : OMI_BaseResource
     [Write, Description("Use Microsoft Update.")] String MSUpdate;
     [Write, Description("Product key for licensed installations.")] String ProductKey;
 };
-
