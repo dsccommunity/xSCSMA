@@ -74,6 +74,7 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 * **ProductKey**: Product key for licensed installations.
 
 ### xRunbookDirectory
+Imports runbook(s) into an SMA instance. The Workflow name is expected to match the name of the ps1, and will become the name of the Runbooks.
 
 * **RunbookPath**: (Required) Path to Runbook(s) to be imported. Accepts wildcards.
 * **Published**: Determines if Runbook is published or left as a draft. Defaults to true, publishing the Runbook.

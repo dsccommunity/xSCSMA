@@ -31,7 +31,7 @@ InModuleScope 'xRunbookDirectory' {
                 Mock -CommandName 'Get-Content' -MockWith { '' }
                 Mock -CommandName 'Get-Content' -MockWith { 'Fail' } -ParameterFilter {$path -eq 'test'}
 
-                $return = Get-TargetResource -RunbookPath 'path' -WebServiceEndpoint 'endpoint'
+                $return = Get-TargetResource -RunbookPath 'path' -WebServiceEndpoint 'endpoint' 
 
                 $return.Matches | should be $false
             }
@@ -99,7 +99,7 @@ InModuleScope 'xRunbookDirectory' {
                 Mock -CommandName 'Get-Item' -MockWith { @( @{ FullName = 'test'; BaseName = 'Test'},  @{ FullName = 'test1'; BaseName = 'Test1'}) }
                 Mock -CommandName 'Edit-SmaRunbook' -MockWith {} 
 
-                Set-TargetResource -RunbookPath 'path' -Publish $false -WebServiceEndpoint 'endpoint'
+                Set-TargetResource -RunbookPath 'path' -Publish $false -WebServiceEndpoint 'endpoint' 
 
                 Assert-MockCalled -CommandName 'Edit-SmaRunbook' -Exactly 4 -Scope It
             }
