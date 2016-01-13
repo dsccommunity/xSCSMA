@@ -13,6 +13,8 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 * **xSCSMAPowerShellSetup** installs SMA PowerShell 
 * **xSCSMAWebServiceServerSetup** installs an SMA Web Service server
 * **xSCSMARunbookWorkerServerSetup** installs an SMA Runbook Worker server
+* **xRunbookDirectory** imports Runbook(s) to an SMA instance
+
 
 ### xSCSMAPowerShellSetup
 
