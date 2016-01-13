@@ -71,8 +71,18 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 1: Opt in to Microsoft Update.
 * **ProductKey**: Product key for licensed installations.
 
+### xRunbookDirectory
+
+* **RunbookPath**: (Required) Path to Runbook(s) to be imported. Accepts wildcards.
+* **Published**: Determins if Runbook is published or left as a draft. Defaults to true, publishing the Runbook.
+* **WebServiceEndpoint**: (Required) The web service endpoint of the SMA instance to import the Runbook too.
+* **Port**: Port to reach the web service endpoint. Defaults the the SMA default of 9090.
 
 ## Versions
+
+### Unreleased
+
+* Added new resource to manage a single or directory of Runbooks
 
 ### 1.2.1.0
 
