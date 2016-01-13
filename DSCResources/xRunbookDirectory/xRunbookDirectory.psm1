@@ -12,6 +12,7 @@ data LocalizedData
  ImportingRunbook = Importing Runbook {0}.
  ImportNotRequired = An import is not required.
  ImportRequired = An import is required.
+ ImportCount = Import number {0}.
 '@ 
 } 
 
@@ -138,12 +139,12 @@ function Set-TargetResource
         $Port = 9090
     )
 
-    $RunbookPathItems = Get-Item $RunbookPath
+    $RunbookPathItems = Get-Item $RunbookPath -Filter *.ps1
 
     Write-Verbose ( $LocalizedData.ImportTwice )
     for($k = 1; $k -lt 3; $k++)
     {
-        Write-Verbose "Import number $k"
+        Write-Verbose ( $($LocalizedData.ImportCount) -f $k )
         forEach ($RunbookPathItem in $RunbookPathItems)
         {
             # try to edit an existing runbook with the same name, this saves a read to verify that the runbook exist.
