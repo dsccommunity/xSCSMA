@@ -13,6 +13,7 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 * **xSCSMAPowerShellSetup** installs SMA PowerShell 
 * **xSCSMAWebServiceServerSetup** installs an SMA Web Service server
 * **xSCSMARunbookWorkerServerSetup** installs an SMA Runbook Worker server
+* **xSmaVariable** Imports SMA variable to an SMA instance
 
 ### xSCSMAPowerShellSetup
 
@@ -71,8 +72,19 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 1: Opt in to Microsoft Update.
 * **ProductKey**: Product key for licensed installations.
 
+### xSmaVariable
+
+* **Name** (Key) Name of variable.
+* **Value** (Required) Value of variable.
+* **Description** Description of variable.
+* **WebServiceEndpoint** (Required) Web service endpoint of SMA instance.
+* **Port** Port to reach the web service endpoint. Defaults to the SMA default of 9090.
 
 ## Versions
+
+### Unreleased
+
+* Added xSmaVariable
 
 ### 1.2.1.0
 
