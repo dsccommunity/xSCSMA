@@ -11,7 +11,7 @@ Configuration RunbookDirectory
     {
         RunbookDirectory Example
         {
-            RunbookPath = "C:\Source\Runbooks\Start-*"
+            RunbookPath = 'C:\Source\Runbooks\Start-*'
             WebServiceEndpoint = 'https:\\localhost'
         }
     }

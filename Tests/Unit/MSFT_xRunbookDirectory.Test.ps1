@@ -1,30 +1,47 @@
-﻿$Module = "$PSScriptRoot\..\DSCResources\xRunbookDirectory\xRunbookDirectory.psm1"
+﻿<#
+.Synopsis
+   Unit test for xRunbookDirectory DSC Resource
+#>
 
-Remove-Module -Name xRunbookDirectory -Force -ErrorAction SilentlyContinue
+$Global:DSCModuleName      = 'xRunbookDirectory' 
+$Global:DSCResourceName    = 'MSFT_xRunbookDirectory' 
 
-Import-Module -Name $Module -Force -ErrorAction Stop
-Import-Module -Name 'Pester'
+#region HEADER
+if ( (-not (Test-Path -Path '.\DSCResource.Tests\')) -or `
+     (-not (Test-Path -Path '.\DSCResource.Tests\TestHelper.psm1')) )
+{
+    & git @('clone','https://github.com/PowerShell/DscResource.Tests.git')
+}
+else
+{
+    & git @('-C',(Join-Path -Path (Get-Location) -ChildPath '\DSCResource.Tests\'),'pull')
+}
+Import-Module .\DSCResource.Tests\TestHelper.psm1 -Force
+$TestEnvironment = Initialize-TestEnvironment `
+    -DSCModuleName $Global:DSCModuleName `
+    -DSCResourceName $Global:DSCResourceName `
+    -TestType Unit 
+#endregion
 
-InModuleScope 'xRunbookDirectory' {
-     Describe 'RunbookDirectory' {
-        Context 'Test-TargetResource' {
-            It 'Returns true when Matches is true' {
-                Mock -CommandName 'Get-TargetResource' -MockWith { @{ Matches = $true} }
+# Begin Testing
+try
+{
+    #region Pester Tests
 
-                Test-TargetResource -RunbookPath 'path' -WebServiceEndpoint 'endpoint' | should be $True 
-            }         
+    # The InModuleScope command allows you to perform white-box unit testing on the internal
+    # (non-exported) code of a Script Module.
+    InModuleScope $Global:DSCResourceName {
 
-            It 'Returns false when Matches is false' {
-                Mock -CommandName 'Get-TargetResource' -MockWith { @{ Matches = $false} }
+        #region Pester Test Initialization
+        # Add functions to mock to InModuleScope scope
+        function Get-SmaRunbookDefinition {}
+        function Edit-SmaRunbook {}
+        function Import-SmaRunbook {}
+        function Publish-SmaRunbook {}
+        #endregion
 
-                Test-TargetResource -RunbookPath 'path' -WebServiceEndpoint 'endpoint' | should be $false 
-            }
-        }
-
-        Context 'Get-TargetResource' {     
-            # Add functions to mock to InModuleScope scope
-            function Get-SmaRunbookDefinition {}
-
+        #region Function Get-TargetResource
+        Describe "$($Global:DSCResourceName)\Get-TargetResource" {
             It 'Does not return a match when runbooks do not match' {
                 Mock -CommandName 'Get-Item' -MockWith {@{ FullName = 'test'; BaseName = 'Test'} }
                 Mock -CommandName 'Get-SmaRunbookDefinition' -MockWith { @{ Content = ''} }
@@ -88,13 +105,26 @@ InModuleScope 'xRunbookDirectory' {
                 Assert-MockCalled -CommandName 'Get-SmaRunbookDefinition' -Exactly 1 -Scope It
             }
         }
+        #endregion
 
-        Context 'Set-TargetResource' {
-            # Add functions to mock to InModuleScope scope
-            function Edit-SmaRunbook {}
-            function Import-SmaRunbook {}
-            function Publish-SmaRunbook {}
+        #region Function Test-TargetResource
+        Describe "$($Global:DSCResourceName)\Test-TargetResource" {
+            It 'Returns true when Matches is true' {
+                Mock -CommandName 'Get-TargetResource' -MockWith { @{ Matches = $true} }
 
+                Test-TargetResource -RunbookPath 'path' -WebServiceEndpoint 'endpoint' | should be $True 
+            }         
+
+            It 'Returns false when Matches is false' {
+                Mock -CommandName 'Get-TargetResource' -MockWith { @{ Matches = $false} }
+
+                Test-TargetResource -RunbookPath 'path' -WebServiceEndpoint 'endpoint' | should be $false 
+            }
+        }
+        #endregion
+
+        #region Function Set-TargetResource
+        Describe "$($Global:DSCResourceName)\Set-TargetResource" {
             It 'Import/Edits each runbook 2 times' {
                 Mock -CommandName 'Get-Item' -MockWith { @( @{ FullName = 'test'; BaseName = 'Test'},  @{ FullName = 'test1'; BaseName = 'Test1'}) }
                 Mock -CommandName 'Edit-SmaRunbook' -MockWith {} 
@@ -104,9 +134,9 @@ InModuleScope 'xRunbookDirectory' {
                 Assert-MockCalled -CommandName 'Edit-SmaRunbook' -Exactly 4 -Scope It
             }
 
-            It 'Imports runbooks when EDit-SmaRunbook fails' {
+            It 'Imports runbooks when Edit-SmaRunbook fails' {
                 Mock -CommandName 'Get-Item' -MockWith { @( @{ FullName = 'test'; BaseName = 'Test'},  @{ FullName = 'test1'; BaseName = 'Test1'}) }
-                Mock -CommandName 'Edit-SmaRunbook' -MockWith { throw "Wdit-SmaRunbook Failed" } 
+                Mock -CommandName 'Edit-SmaRunbook' -MockWith { throw "Edit-SmaRunbook Failed" } 
                 Mock -CommandName 'Import-SmaRunbook' -MockWith {}
 
                 Set-TargetResource -RunbookPath 'path' -Publish $false -WebServiceEndpoint 'endpoint'
@@ -124,5 +154,14 @@ InModuleScope 'xRunbookDirectory' {
                 Assert-MockCalled -CommandName 'Publish-SmaRunbook' -Exactly 2 -Scope It
             }
         }
-     }
+        #endregion
+    }
+    #endregion
 }
+finally
+{
+    #region FOOTER
+    Restore-TestEnvironment -TestEnvironment $TestEnvironment
+    #endregion
+}
+

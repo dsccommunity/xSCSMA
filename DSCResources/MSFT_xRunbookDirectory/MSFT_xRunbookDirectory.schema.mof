@@ -1,0 +1,10 @@
+[ClassVersion("1.0.0.0"), FriendlyName("RunbookDirectory")]
+class MSFT_xRunbookDirectory : OMI_BaseResource
+{
+    [Key, Description("Path to Runbook(s) to be imported. Accepts wildcards.")] String RunbookPath;
+    [Write, Description("Describes the published state of the imported Runbook(s). Defaults to true, publishing the Runbook.")] Boolean Publish;
+    [Read, Description("Describes the validity of the imported Runbook(s).")] Boolean Matches;
+    [Key, Description("URL of SMA's web service endpoint.")] String WebServiceEndpoint;
+    [Write, Description("Port of the SMA web site. Defaults to the SMA default of 9090.")] Uint32 Port;
+};
+

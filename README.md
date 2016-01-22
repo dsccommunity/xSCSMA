@@ -76,16 +76,16 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 ### xRunbookDirectory
 Imports runbook(s) into an SMA instance. The Workflow name is expected to match the name of the ps1, and will become the name of the Runbooks.
 
-* **RunbookPath**: (Required) Path to Runbook(s) to be imported. Accepts wildcards.
+* **RunbookPath**: (Key) Path to Runbook(s) to be imported. Accepts wildcards.
 * **Published**: Determines if Runbook is published or left as a draft. Defaults to true, publishing the Runbook.
-* **WebServiceEndpoint**: (Required) The web service endpoint of the SMA instance to import the Runbook too.
+* **WebServiceEndpoint**: (Key) The web service endpoint of the SMA instance to import the Runbook too.
 * **Port**: Port to reach the web service endpoint. Defaults to the SMA default of 9090.
 
 ## Versions
 
 ### Unreleased
 
-* Added new resource to manage a single or directory of Runbooks.
+* Added new resource to manage a single or directory of Runbooks, xRunbookDirectory.
 
 ### 1.2.1.0
 
