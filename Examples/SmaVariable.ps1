@@ -22,5 +22,4 @@
 
 RunbookDirectory -NodeName "localhost" -OutputPath .\SMA 
 
-
 Start-DscConfiguration -Path .\SMA -Wait -Force -Verbose 

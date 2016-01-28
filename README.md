@@ -77,14 +77,14 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 * **Name** (Key) Name of variable.
 * **Value** (Required) Value of variable.
 * **Description** Description of variable.
-* **WebServiceEndpoint** (Required) Web service endpoint of SMA instance.
+* **WebServiceEndpoint** (Key) Web service endpoint of SMA instance.
 * **Port** Port to reach the web service endpoint. Defaults to the SMA default of 9090.
 
 ## Versions
 
 ### Unreleased
 
-* Added xSmaVariable
+* Added xSmaVariable resource
 
 ### 1.2.1.0
 
