@@ -74,6 +74,7 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 
 ### xSmaVariable
 
+* **Ensure** (Required) Ensures that the SMA variable is **Present** or **Absent** at the web service endpoint.
 * **Name** (Key) Name of variable.
 * **Value** (Required) Value of variable.
 * **Description** Description of variable.
