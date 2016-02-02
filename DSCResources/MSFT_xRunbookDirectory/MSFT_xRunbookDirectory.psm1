@@ -13,6 +13,8 @@ data LocalizedData
  ImportNotRequired = An import is not required.
  ImportRequired = An import is required.
  ImportCount = Import number {0}.
+ RemovingRunbook = Removing runbook {0}.
+ FailedToRemoveRunbook = Failed to remove Runbook {0}.
 '@ 
 } 
 
@@ -23,11 +25,13 @@ function Get-TargetResource
     param
     (
         [parameter(Mandatory = $true)]
+        [ValidateSet("Published", "Draft", "Absent")]
+        [System.String]
+        $Ensure = "Published",
+
+        [parameter(Mandatory = $true)]
         [System.String]
         $RunbookPath,
-
-        [System.Boolean]
-        $Publish = $true,
 
         [parameter(Mandatory = $true)]
         [System.String]
@@ -39,6 +43,7 @@ function Get-TargetResource
 
     $RunbookPathItems = Get-Item $RunbookPath -Filter *.ps1
 
+    $ensureStatus = "Absent"
     $match = $true
     forEach ($RunbookPathItem in $RunbookPathItems)
     {
@@ -50,13 +55,17 @@ function Get-TargetResource
             $runbookFound = $false
             try
             {
-                if( $publish )
+                if( $Ensure -eq "Published" )
                 {
                     $runbookDefinition = Get-SmaRunbookDefinition -Name $($RunbookPathItem.BaseName) -WebServiceEndpoint $WebServiceEndpoint -Port $port -Type 'Published' -ErrorAction Stop
+
+                    $ensureStatus = "Published"
                 }
                 else
                 {
                     $runbookDefinition = Get-SmaRunbookDefinition -Name $($RunbookPathItem.BaseName) -WebServiceEndpoint $WebServiceEndpoint -Port $port -Type 'Draft' -ErrorAction Stop
+
+                    $ensureStatus = "Draft"
                 }
 
                 $runbookFound = $true
@@ -108,10 +117,10 @@ function Get-TargetResource
     }
 
     $returnValue = @{
+        Ensure = [System.String]$ensureStatus
         RunbookPath = [System.String]$RunbookPath
         WebServiceEndpoint = [System.String]$WebServiceEndpoint
         Port = [System.String]$Port
-        Publish = [System.Boolean]$Publish
         Matches = [System.Boolean]$match
     }
 
@@ -125,11 +134,13 @@ function Set-TargetResource
     param
     (
         [parameter(Mandatory = $true)]
+        [ValidateSet("Published", "Draft", "Absent")]
+        [System.String]
+        $Ensure = "Published",
+
+        [parameter(Mandatory = $true)]
         [System.String]
         $RunbookPath,
-
-        [System.Boolean]
-        $Publish = $true,
 
         [parameter(Mandatory = $true)]
         [System.String]
@@ -141,31 +152,50 @@ function Set-TargetResource
 
     $RunbookPathItems = Get-Item $RunbookPath -Filter *.ps1
 
-    Write-Verbose ( $LocalizedData.ImportTwice )
-    for($k = 1; $k -lt 3; $k++)
+    if( $Ensure -eq "Absent")
     {
-        Write-Verbose ( $($LocalizedData.ImportCount) -f $k )
         forEach ($RunbookPathItem in $RunbookPathItems)
         {
-            # try to edit an existing runbook with the same name, this saves a read to verify that the runbook exist.
-            # if error, assume the runbook has never been imported
-            Write-Verbose ( $($LocalizedData.ImportingRunbook) -f $RunbookPathItem.BaseName )
             try
             {
-                Edit-SmaRunbook -Path $RunbookPathItem.FullName -Name $RunbookPathItem.BaseName -WebServiceEndpoint $WebServiceEndpoint -Port $port -Overwrite -ErrorAction Stop
+                Write-Verbose ( $($LocalizedData.RemovingRunbook) -f $RunbookPathItem.BaseName)
+
+                Remove-SmaRunbook -Name $RunbookPathItem.BaseName -WebServiceEndpoint $WebServiceEndpoint -Port $port -ErrorAction Stop
             }
             catch
             {
-                Import-SmaRunbook -Path $RunbookPathItem.FullName -WebServiceEndpoint $WebServiceEndpoint -Port $port -ErrorAction Stop
-            }      
+                Write-Verbose ( $($LocalizedData.FailedToRemoveRunbook) -f $RunbookPathItem.BaseName)
+            }
         }
     }
-
-    if( $publish )
+    else
     {
-        forEach ($RunbookPathItem in $RunbookPathItems)
+        Write-Verbose ( $LocalizedData.ImportTwice )
+        for($k = 1; $k -lt 3; $k++)
         {
-            Publish-SmaRunbook -Name $RunbookPathItem.BaseName -WebServiceEndpoint $WebServiceEndpoint -Port $port
+            Write-Verbose ( $($LocalizedData.ImportCount) -f $k )
+            forEach ($RunbookPathItem in $RunbookPathItems)
+            {
+                # try to edit an existing runbook with the same name, this saves a read to verify that the runbook exist.
+                # if error, assume the runbook has never been imported
+                Write-Verbose ( $($LocalizedData.ImportingRunbook) -f $RunbookPathItem.BaseName )
+                try
+                {
+                    Edit-SmaRunbook -Path $RunbookPathItem.FullName -Name $RunbookPathItem.BaseName -WebServiceEndpoint $WebServiceEndpoint -Port $port -Overwrite -ErrorAction Stop
+                }
+                catch
+                {
+                    Import-SmaRunbook -Path $RunbookPathItem.FullName -WebServiceEndpoint $WebServiceEndpoint -Port $port -ErrorAction Stop
+                }      
+            }
+        }
+
+        if( $Ensure -eq "Published" )
+        {
+            forEach ($RunbookPathItem in $RunbookPathItems)
+            {
+                Publish-SmaRunbook -Name $RunbookPathItem.BaseName -WebServiceEndpoint $WebServiceEndpoint -Port $port -ErrorAction Stop
+            }
         }
     }
 }
@@ -178,11 +208,13 @@ function Test-TargetResource
     param
     (
         [parameter(Mandatory = $true)]
+        [ValidateSet("Published", "Draft", "Absent")]
+        [System.String]
+        $Ensure = "Published",
+
+        [parameter(Mandatory = $true)]
         [System.String]
         $RunbookPath,
-
-        [System.Boolean]
-        $Publish = $true,
 
         [parameter(Mandatory = $true)]
         [System.String]
@@ -192,18 +224,25 @@ function Test-TargetResource
         $Port = 9090
     )
 
-    $results = (Get-TargetResource @PSBoundParameters).Matches -eq $true
+    $results = Get-TargetResource @PSBoundParameters
 
-    if( $results )
+    if( ($Ensure -eq "Published") -or ($Ensure -eq "Draft") )
+    {
+        if( ($results.Ensure -eq $Ensure) -and ($results.Matches -eq $true) )
+        {
+            Write-Verbose ( $LocalizedData.ImportNotRequired )
+            return $true
+        }
+    }
+
+    if( ($results.Ensure -eq "Absent") -and ($Ensure -eq "Absent") )
     {
         Write-Verbose ( $LocalizedData.ImportNotRequired )
         return $true
     }
-    else
-    {
-        Write-Verbose ( $LocalizedData.ImportRequired )
-        return $false
-    }
+
+    Write-Verbose ( $LocalizedData.ImportRequired )
+    return $false
 }
 
 

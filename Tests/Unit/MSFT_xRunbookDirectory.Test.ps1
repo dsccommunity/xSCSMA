@@ -37,6 +37,7 @@ try
         function Get-SmaRunbookDefinition {}
         function Edit-SmaRunbook {}
         function Import-SmaRunbook {}
+        function Remove-SmaRunbook {}
         function Publish-SmaRunbook {}
         #endregion
 
@@ -48,7 +49,7 @@ try
                 Mock -CommandName 'Get-Content' -MockWith { '' }
                 Mock -CommandName 'Get-Content' -MockWith { 'Fail' } -ParameterFilter {$path -eq 'test'}
 
-                $return = Get-TargetResource -RunbookPath 'path' -WebServiceEndpoint 'endpoint' 
+                $return = Get-TargetResource -RunbookPath 'path' -Ensure 'Published' -WebServiceEndpoint 'endpoint' 
 
                 $return.Matches | should be $false
             }
@@ -59,7 +60,7 @@ try
                 Mock -CommandName 'Get-Content' -MockWith { 'Pass' }
                 Mock -CommandName 'Get-Content' -MockWith { 'Pass' } -ParameterFilter {$path -eq 'test'}
 
-                $return = Get-TargetResource -RunbookPath 'path' -WebServiceEndpoint 'endpoint' 
+                $return = Get-TargetResource -RunbookPath 'path' -Ensure 'Published' -WebServiceEndpoint 'endpoint' 
 
                 $return.Matches | should be $true
             }
@@ -70,7 +71,7 @@ try
                 Mock -CommandName 'Get-Content' -MockWith { @('','Pass','') }
                 Mock -CommandName 'Get-Content' -MockWith { 'Pass' } -ParameterFilter {$path -eq 'test'}
 
-                $return = Get-TargetResource -RunbookPath 'path' -WebServiceEndpoint 'endpoint' 
+                $return = Get-TargetResource -RunbookPath 'path' -Ensure 'Published' -WebServiceEndpoint 'endpoint' 
 
                 $return.Matches | should be $true
             }    
@@ -78,7 +79,7 @@ try
             It 'Returns true when runbook path contains nothing' {
                 Mock -CommandName 'Get-Item' -MockWith {}
 
-                $return = Get-TargetResource -RunbookPath 'path' -WebServiceEndpoint 'endpoint'
+                $return = Get-TargetResource -RunbookPath 'path' -Ensure 'Published' -WebServiceEndpoint 'endpoint'
 
                 $return.Matches | should be $true
             }    
@@ -89,36 +90,87 @@ try
                 Mock -CommandName 'Get-Content' -MockWith { 'Pass' }
                 Mock -CommandName 'Get-Content' -MockWith { 'Pass' } -ParameterFilter {$path -eq 'test'}
 
-                Get-TargetResource -RunbookPath 'path'-WebServiceEndpoint 'endpoint'
+                Get-TargetResource -RunbookPath 'path' -Ensure 'Published' -WebServiceEndpoint 'endpoint'
 
                 Assert-MockCalled -CommandName 'Get-SmaRunbookDefinition' -Exactly 1 -Scope It
             } 
 
             It 'Validate published is not used if not specified' {
-                Mock -CommandName 'Get-Item' -MockWith {@{ FullName = 'test'; BaseName = 'Test'} }
+                Mock -CommandName 'Get-Item' -MockWith { @{ FullName = 'test'; BaseName = 'Test'} }
                 Mock -CommandName 'Get-SmaRunbookDefinition' -MockWith { @{ Content = ''} } -ParameterFilter {$Type -eq "Draft"} -Verifiable
                 Mock -CommandName 'Get-Content' -MockWith { 'Pass' }
                 Mock -CommandName 'Get-Content' -MockWith { 'Pass' } -ParameterFilter {$path -eq 'test'}
 
-                Get-TargetResource -RunbookPath 'path' -Publish $false -WebServiceEndpoint 'endpoint'
+                Get-TargetResource -RunbookPath 'path' -Ensure 'Draft' -WebServiceEndpoint 'endpoint'
 
                 Assert-MockCalled -CommandName 'Get-SmaRunbookDefinition' -Exactly 1 -Scope It
+            }
+
+            It 'Returns ensure equal to absent when no Runbooks are found' {
+                Mock -CommandName 'Get-Item' -MockWith { @( @{ FullName = 'test'; BaseName = 'Test'},  @{ FullName = 'test1'; BaseName = 'Test1'}) }
+                Mock -CommandName 'Get-SmaRunbookDefinition' -MockWith { Throw 'Failed to find runbook' }
+                Mock -CommandName 'Get-Content' -MockWith { 'Pass' }
+                Mock -CommandName 'Get-Content' -MockWith { 'Pass' } -ParameterFilter {$path -eq 'test'}
+
+               $result = Get-TargetResource -RunbookPath 'path' -Ensure 'Published' -WebServiceEndpoint 'endpoint'
+               
+               $result.Ensure | should be 'Absent'
+            }
+
+            It 'Returns ensure equal to draft when draft runbooks are found' {
+                Mock -CommandName 'Get-Item' -MockWith { @( @{ FullName = 'test'; BaseName = 'Test'},  @{ FullName = 'test1'; BaseName = 'Test1'}) }
+                Mock -CommandName 'Get-SmaRunbookDefinition' -MockWith { @{ Content = ''} } 
+                Mock -CommandName 'Get-Content' -MockWith { 'Pass' }
+                Mock -CommandName 'Get-Content' -MockWith { 'Pass' } -ParameterFilter {$path -eq 'test'}
+
+                $result = Get-TargetResource -RunbookPath 'path' -Ensure 'Draft' -WebServiceEndpoint 'endpoint' 
+               
+               $result.Ensure | should be 'Draft'
+            }
+
+            It 'Returns ensure equal to draft when published runbooks are found' {
+                Mock -CommandName 'Get-Item' -MockWith { @( @{ FullName = 'test'; BaseName = 'Test'},  @{ FullName = 'test1'; BaseName = 'Test1'}) }
+                Mock -CommandName 'Get-SmaRunbookDefinition' -MockWith { @{ Content = ''} } 
+                Mock -CommandName 'Get-Content' -MockWith { 'Pass' }
+                Mock -CommandName 'Get-Content' -MockWith { 'Pass' } -ParameterFilter {$path -eq 'test'}
+
+                $result = Get-TargetResource -RunbookPath 'path' -Ensure 'Published' -WebServiceEndpoint 'endpoint' 
+               
+               $result.Ensure | should be 'Published'
             }
         }
         #endregion
 
         #region Function Test-TargetResource
         Describe "$($Global:DSCResourceName)\Test-TargetResource" {
-            It 'Returns true when Matches is true' {
-                Mock -CommandName 'Get-TargetResource' -MockWith { @{ Matches = $true} }
+            It 'Returns true when Matches is true and ensure matches' {
+                Mock -CommandName 'Get-TargetResource' -MockWith { @{ Matches = $true; Ensure = 'Published'} }
 
-                Test-TargetResource -RunbookPath 'path' -WebServiceEndpoint 'endpoint' | should be $True 
+                Test-TargetResource -RunbookPath 'path' -Ensure 'Published' -WebServiceEndpoint 'endpoint' | should be $True 
             }         
 
-            It 'Returns false when Matches is false' {
-                Mock -CommandName 'Get-TargetResource' -MockWith { @{ Matches = $false} }
+            It 'Returns false when Matches is true and ensure does not match' {
+                Mock -CommandName 'Get-TargetResource' -MockWith { @{ Matches = $true; Ensure = 'Draft'} }
 
-                Test-TargetResource -RunbookPath 'path' -WebServiceEndpoint 'endpoint' | should be $false 
+                Test-TargetResource -RunbookPath 'path' -Ensure 'Published' -WebServiceEndpoint 'endpoint' | should be $false 
+            }
+
+            It 'Returns false when Matches is false and ensure is published' {
+                Mock -CommandName 'Get-TargetResource' -MockWith { @{ Matches = $false; Ensure = 'Published'} }
+
+                Test-TargetResource -RunbookPath 'path' -Ensure 'Published' -WebServiceEndpoint 'endpoint' | should be $false 
+            }
+
+            It 'Returns false when Matches is false and ensure is Draft' {
+                Mock -CommandName 'Get-TargetResource' -MockWith { @{ Matches = $false; Ensure = 'Draft'} }
+
+                Test-TargetResource -RunbookPath 'path' -Ensure 'Draft' -WebServiceEndpoint 'endpoint' | should be $false 
+            }
+
+            It 'Returns true when Matches is false and ensure is absent' {
+                Mock -CommandName 'Get-TargetResource' -MockWith { @{ Matches = $false; Ensure = 'Absent'} }
+
+                Test-TargetResource -RunbookPath 'path' -Ensure 'Absent' -WebServiceEndpoint 'endpoint' | should be $true 
             }
         }
         #endregion
@@ -129,7 +181,7 @@ try
                 Mock -CommandName 'Get-Item' -MockWith { @( @{ FullName = 'test'; BaseName = 'Test'},  @{ FullName = 'test1'; BaseName = 'Test1'}) }
                 Mock -CommandName 'Edit-SmaRunbook' -MockWith {} 
 
-                Set-TargetResource -RunbookPath 'path' -Publish $false -WebServiceEndpoint 'endpoint' 
+                Set-TargetResource -RunbookPath 'path' -Ensure 'Draft' -WebServiceEndpoint 'endpoint' 
 
                 Assert-MockCalled -CommandName 'Edit-SmaRunbook' -Exactly 4 -Scope It
             }
@@ -139,19 +191,28 @@ try
                 Mock -CommandName 'Edit-SmaRunbook' -MockWith { throw "Edit-SmaRunbook Failed" } 
                 Mock -CommandName 'Import-SmaRunbook' -MockWith {}
 
-                Set-TargetResource -RunbookPath 'path' -Publish $false -WebServiceEndpoint 'endpoint'
+                Set-TargetResource -RunbookPath 'path' -Ensure 'Draft' -WebServiceEndpoint 'endpoint'
 
                 Assert-MockCalled -CommandName 'Import-SmaRunbook' -Exactly 4 -Scope It
             }
 
-            It 'Published runbooks when publish is true' {
+            It 'Published runbooks when ensure is published' {
                 Mock -CommandName 'Get-Item' -MockWith { @( @{ FullName = 'test'; BaseName = 'Test'},  @{ FullName = 'test1'; BaseName = 'Test1'}) }
                 Mock -CommandName 'Edit-SmaRunbook' -MockWith {} 
                 Mock -CommandName 'Publish-SmaRunbook' -MockWith {}
 
-                Set-TargetResource -RunbookPath 'path'-WebServiceEndpoint 'endpoint'
+                Set-TargetResource -RunbookPath 'path' -Ensure 'Published' -WebServiceEndpoint 'endpoint'
 
                 Assert-MockCalled -CommandName 'Publish-SmaRunbook' -Exactly 2 -Scope It
+            }
+
+            It 'Removes runbooks when ensure is absent' {
+                Mock -CommandName 'Get-Item' -MockWith { @( @{ FullName = 'test'; BaseName = 'Test'},  @{ FullName = 'test1'; BaseName = 'Test1'}) }
+                Mock -CommandName 'Remove-SmaRunbook' -MockWith {} -Verifiable
+
+                Set-TargetResource -RunbookPath 'path' -Ensure 'Absent' -WebServiceEndpoint 'endpoint'
+
+                Assert-MockCalled -CommandName 'Remove-SmaRunbook' -Exactly 2 -Scope It
             }
         }
         #endregion

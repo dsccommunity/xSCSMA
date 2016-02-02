@@ -13,6 +13,7 @@ Configuration RunbookDirectory
         {
             RunbookPath = 'C:\Source\Runbooks\Start-*'
             WebServiceEndpoint = 'https:\\localhost'
+            Ensure = 'Published'
         }
     }
 }
