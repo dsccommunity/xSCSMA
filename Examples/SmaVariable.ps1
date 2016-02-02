@@ -15,6 +15,7 @@
             Name = "Variable"
             Value = 'Value' 
             WebServiceEndpoint = 'https:\\localhost' 
+            Ensure = 'Present'
         } 
     } 
 } 
