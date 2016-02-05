@@ -22,7 +22,8 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 * **SourceFolder**: Folder within the source path containing the source files for installation.
 * **SetupCredential**: (Required) Credential to be used to perform the installation.
 
-**xSCSMAWebServiceServerSetup** is used for installation of the SMA Web Service server, and has the following properties:
+###xSCSMAWebServiceServerSetup
+ is used for installation of the SMA Web Service server, and has the following properties:
 
 * **Ensure**: (Key) Ensures that the SCSCMA Web Service server components are **Present** or **Absent** on the machine. 
 * **SourcePath**: (Required) UNC path to the root of the source files for installation.
@@ -76,7 +77,7 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 Imports runbook(s) into an SMA instance. The Workflow name is expected to match the name of the ps1, and will become the name of the Runbooks.
 
 * **RunbookPath**: (Key) Path to Runbook(s) to be imported. Accepts wildcards.
-* **Published**: Determines if Runbook is published or left as a draft. Defaults to true, publishing the Runbook.
+* **Ensure**: (Required) The import state of runbooks found at RunbookPath. This can be Published, Draft, or Absent.
 * **WebServiceEndpoint**: (Key) The web service endpoint of the SMA instance to import the Runbook too.
 * **Port**: Port to reach the web service endpoint. Defaults to the SMA default of 9090.
 
@@ -129,4 +130,5 @@ The samples require the use of the [Windows Management Framework (WMF) 5.0 Previ
 
 System Center 2012 R2 Service Management Automation Web Service and Runbook Worker installers have a hard check for PowerShell 4.0. 
 If you are using these resources to install on a system that has WMF 5.0 preview installed, you must copy the transform (MST) files from the Web Service and Runbook Worker DSC resource folders to the SMA installation folder.
+
 
