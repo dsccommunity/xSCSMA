@@ -15,7 +15,6 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 * **xSCSMARunbookWorkerServerSetup** installs an SMA Runbook Worker server
 * **xRunbookDirectory** imports Runbook(s) to an SMA instance
 
-
 ### xSCSMAPowerShellSetup
 
 * **Ensure**: (Key) Ensures that the SMA PowerShell components are **Present** or **Absent** on the machine. 
@@ -130,3 +129,4 @@ The samples require the use of the [Windows Management Framework (WMF) 5.0 Previ
 
 System Center 2012 R2 Service Management Automation Web Service and Runbook Worker installers have a hard check for PowerShell 4.0. 
 If you are using these resources to install on a system that has WMF 5.0 preview installed, you must copy the transform (MST) files from the Web Service and Runbook Worker DSC resource folders to the SMA installation folder.
+
