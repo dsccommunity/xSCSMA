@@ -13,6 +13,7 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 * **xSCSMAPowerShellSetup** installs SMA PowerShell 
 * **xSCSMAWebServiceServerSetup** installs an SMA Web Service server
 * **xSCSMARunbookWorkerServerSetup** installs an SMA Runbook Worker server
+* **xRunbookDirectory** imports Runbook(s) to an SMA instance
 
 ### xSCSMAPowerShellSetup
 
@@ -21,7 +22,8 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 * **SourceFolder**: Folder within the source path containing the source files for installation.
 * **SetupCredential**: (Required) Credential to be used to perform the installation.
 
-**xSCSMAWebServiceServerSetup** is used for installation of the SMA Web Service server, and has the following properties:
+###xSCSMAWebServiceServerSetup
+is used for installation of the SMA Web Service server, and has the following properties:
 
 * **Ensure**: (Key) Ensures that the SCSCMA Web Service server components are **Present** or **Absent** on the machine. 
 * **SourcePath**: (Required) UNC path to the root of the source files for installation.
@@ -71,10 +73,19 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 1: Opt in to Microsoft Update.
 * **ProductKey**: Product key for licensed installations.
 
+### xRunbookDirectory
+Imports runbook(s) into an SMA instance. The Workflow name is expected to match the name of the ps1, and will become the name of the Runbooks.
+
+* **RunbookPath**: (Key) Path to Runbook(s) to be imported. Accepts wildcards.
+* **Ensure**: (Required) The import state of runbooks found at RunbookPath. This can be Published, Draft, or Absent.
+* **WebServiceEndpoint**: (Key) The web service endpoint of the SMA instance to import the Runbook too.
+* **Port**: Port to reach the web service endpoint. Defaults to the SMA default of 9090.
 
 ## Versions
 
 ### Unreleased
+
+* Added new resource to manage a single or directory of Runbooks, xRunbookDirectory.
 
 ### 1.2.1.0
 
