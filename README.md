@@ -14,6 +14,7 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 * **xSCSMAWebServiceServerSetup** installs an SMA Web Service server
 * **xSCSMARunbookWorkerServerSetup** installs an SMA Runbook Worker server
 * **xRunbookDirectory** imports Runbook(s) to an SMA instance
+* **xSmaVariable** Imports SMA variable to an SMA instance
 
 ### xSCSMAPowerShellSetup
 
@@ -82,11 +83,21 @@ Imports runbook(s) into an SMA instance. The Workflow name is expected to match 
 * **Port**: Port to reach the web service endpoint. Defaults to the SMA default of 9090.
 * **Port** Port to reach the web service endpoint. Defaults to the SMA default of 9090.
 
+### xSmaVariable
+
+* **Ensure** (Required) Ensures that the SMA variable is **Present** or **Absent** at the web service endpoint.
+* **Name** (Key) Name of variable.
+* **Value** (Required) Value of variable.
+* **Description** Description of variable.
+* **WebServiceEndpoint** (Key) Web service endpoint of SMA instance.
+* **Port** Port to reach the web service endpoint. Defaults to the SMA default of 9090.
+
 ## Versions
 
 ### Unreleased
 
 * Added new resource to manage a single or directory of Runbooks, xRunbookDirectory.
+* Added xSmaVariable resource.
 
 ### 1.2.1.0
 
