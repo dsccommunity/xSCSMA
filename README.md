@@ -98,6 +98,7 @@ Imports runbook(s) into an SMA instance. The Workflow name is expected to match 
 
 * Added new resource to manage a single or directory of Runbooks, xRunbookDirectory.
 * Added xSmaVariable resource.
+* Added new example to show how to use xRunbookDirectory to remove all SMA sample Runbooks
 
 ### 1.2.1.0
 
