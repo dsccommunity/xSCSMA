@@ -135,6 +135,18 @@ SCSMA-SeperateSQL.ps1 installs all SMA roles on one server and SQL on a separate
 
 SCSMA-MultiInstance.ps1 installs all SMA roles including multiple instances of both Web Service and Runbook Worker servers and SQL on a separate server.
 
+### Remove Sample Runbooks
+
+RemoveSampleRunbooks.ps1 removes SMA's default sample Runbooks.
+
+###  Runbook Directory
+
+RunbookDirectory.ps1 imports all Runbooks found in a directory that start with the name "Start-" and publishes them.
+
+### SMA Variable
+
+SmaVariable.ps1 adds a variable named "Variable" with value "Value" 
+
 Notes:
 
 All three examples use the exact same Configuration and just modify the behavior based on input ConfigurationData.
