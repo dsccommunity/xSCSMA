@@ -149,7 +149,7 @@ SmaVariable.ps1 adds a variable named "Variable" with value "Value"
 
 Notes:
 
-All three examples use the exact same Configuration and just modify the behavior based on input ConfigurationData.
+The Single Server Installation, Separate SQL, and Multiple Instances examples use the exact same Configuration and just modify the behavior based on input ConfigurationData.
 
 In the Examples folder you will see a version of each file with "-TP" appended to the name. 
 These are the equivalent examples for deployment of System Center Technical Preview on Windows Server Technical Preview.
