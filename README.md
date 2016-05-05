@@ -96,6 +96,8 @@ Imports runbook(s) into an SMA instance. The Workflow name is expected to match 
 
 ### Unreleased
 
+* Added new example to show how to use xRunbookDirectory to remove all SMA sample Runbooks
+
 ### 1.3.0.0
 
 * Added new resource to manage a single or directory of Runbooks, xRunbookDirectory.
@@ -133,9 +135,21 @@ SCSMA-SeperateSQL.ps1 installs all SMA roles on one server and SQL on a separate
 
 SCSMA-MultiInstance.ps1 installs all SMA roles including multiple instances of both Web Service and Runbook Worker servers and SQL on a separate server.
 
+### Remove Sample Runbooks
+
+RemoveSampleRunbooks.ps1 removes SMA's default sample Runbooks.
+
+###  Runbook Directory
+
+RunbookDirectory.ps1 imports all Runbooks found in a directory that start with the name "Start-" and publishes them.
+
+### SMA Variable
+
+SmaVariable.ps1 adds a variable named "Variable" with value "Value" 
+
 Notes:
 
-All three examples use the exact same Configuration and just modify the behavior based on input ConfigurationData.
+The Single Server Installation, Separate SQL, and Multiple Instances examples use the exact same Configuration and just modify the behavior based on input ConfigurationData.
 
 In the Examples folder you will see a version of each file with "-TP" appended to the name. 
 These are the equivalent examples for deployment of System Center Technical Preview on Windows Server Technical Preview.
