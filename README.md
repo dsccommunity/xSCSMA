@@ -18,6 +18,7 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 * **xSCSMARunbookWorkerServerSetup** installs an SMA Runbook Worker server
 * **xRunbookDirectory** imports Runbook(s) to an SMA instance
 * **xSmaVariable** Imports SMA variable to an SMA instance
+* **xSmaCredential** Imports SMA Credentials to an SMA instance
 
 ### xSCSMAPowerShellSetup
 
@@ -95,11 +96,20 @@ Imports runbook(s) into an SMA instance. The Workflow name is expected to match 
 * **WebServiceEndpoint** (Key) Web service endpoint of SMA instance.
 * **Port** Port to reach the web service endpoint. Defaults to the SMA default of 9090.
 
+### xSmaCredential
+
+* **Name** (Key) Name of credential.
+* **Credential** (Required) Credential object to be imported.
+* **Description** Description of credential.
+* **WebServiceEndpoint** (Required) Web service endpoint of SMA instance.
+* **Port** Port to reach the web service endpoint.
+
 ## Versions
 
 ### Unreleased
 
 * Added new example to show how to use xRunbookDirectory to remove all SMA sample Runbooks
+* Added new resource xSmaCredential.
 
 ### 1.3.0.0
 
