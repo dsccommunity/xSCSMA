@@ -32,12 +32,10 @@ function Set-SmaCredential {}
 # Begin Testing
 try
 {
-    #region Error getting SMA Credential
-    Describe 'Error getting SMA Credential' {
-        $errorValue = 'Error getting SMA Credential'        
-
-        Mock -CommandName Get-SmaCredential -MockWith { Throw $errorValue } 
-        Mock -CommandName Set-SmaCredential -MockWith { Throw $errorValue } -Verifiable
+    #region SMA credentials not found
+    Describe 'SMA credentials not found' {
+        Mock -CommandName Get-SmaCredential -MockWith { "" } 
+        Mock -CommandName Set-SmaCredential -MockWith { } -Verifiable
 
         $testParameters = @{
             Name = 'CredentialName'
@@ -45,12 +43,15 @@ try
             WebServiceEndpoint = 'https://localhost'
         }
 
-        It 'Get method returns set equal to false' {
+        It 'Get method returns no user name or description' {
+
             $result = Get-TargetResource @testParameters 
             
             $result.name | Should Be $testParameters.Name
+            $result.credential | should be $testParameters.credential
+            $result.Description | should be ""
+            $result.UserName | should be ""
             $result.WebServiceEndpoint | Should Be $testParameters.WebServiceEndpoint
-            $result.Set | Should Be 'False'
         }
 
         It 'Test method returns false' {
@@ -58,7 +59,7 @@ try
         }
 
         It 'Set method calls Set-SmaCredential' {
-            { Set-TargetResource @testParameters } | should throw $errorValue
+            Set-TargetResource @testParameters
 
             Assert-MockCalled Set-SmaCredential 
         }
@@ -76,12 +77,14 @@ try
         Mock -CommandName Get-SmaCredential -MockWith { @{ Name = $testParameters.Name; UserName = "$($cred.UserName)1"} } 
         Mock -CommandName Set-SmaCredential -MockWith {  } -Verifiable
 
-        It 'Get method returns set equal to false' {
+        It 'Get method returns discovered user name' {
             $result = Get-TargetResource @testParameters 
             
             $result.name | Should Be $testParameters.Name
+            $result.credential | should be $testParameters.credential
+            $result.Description | should be ""
+            $result.UserName | should be "$($cred.UserName)1"
             $result.WebServiceEndpoint | Should Be $testParameters.WebServiceEndpoint
-            $result.Set | Should Be 'False'
         }
 
         It 'Test method returns false' {
@@ -105,16 +108,17 @@ try
             Description = 'Description'
         }
 
-        Mock -CommandName Get-SmaCredential -MockWith { @{ Name = $testParameters.Name; UserName = $($cred.UserName)} } 
+        Mock -CommandName Get-SmaCredential -MockWith { @{ Name = $testParameters.Name; UserName = $cred.UserName; } } 
         Mock -CommandName Set-SmaCredential -MockWith {  } -Verifiable  
 
-        It 'Get method returns set equal to false' {
+        It 'Get method returns blank description ' {
             $result = Get-TargetResource @testParameters 
             
             $result.name | Should Be $testParameters.Name
+            $result.credential | should be $testParameters.credential
+            $result.Description | should be ""
+            $result.UserName | should be $testParameters.credential.UserName
             $result.WebServiceEndpoint | Should Be $testParameters.WebServiceEndpoint
-            $result.Description | Should Be $testParameters.Description
-            $result.Set | Should Be 'False'
         }
 
         It 'Test method returns false' {
@@ -144,15 +148,16 @@ try
             $result = Get-TargetResource @testParameters 
             
             $result.name | Should Be $testParameters.Name
+            $result.credential | should be $testParameters.credential
+            $result.Description | should be $testParameters.Description
+            $result.UserName | should be $testParameters.credential.UserName
             $result.WebServiceEndpoint | Should Be $testParameters.WebServiceEndpoint
-            $result.Description | Should Be $testParameters.Description
-            $result.Set | Should Be 'True'
         }
 
         It 'Test method returns true' {
             Test-TargetResource @testParameters | Should be $true
         }
-    }
+    } 
     #endregion
 }
 finally

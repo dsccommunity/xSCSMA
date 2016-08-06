@@ -23,45 +23,21 @@ function Get-TargetResource
         $Port
     )
 
-    $Set = $true
-    try
-    {
-        $null = $PSBoundParameters.Remove("credential")
-        $null = $PSBoundParameters.Remove("Description")
+    $null = $PSBoundParameters.Remove("credential")
+    $null = $PSBoundParameters.Remove("Description")
 
-        $SMACredential = Get-SmaCredential @PSBoundParameters -ErrorAction Stop
+    $SMACredential = Get-SmaCredential @PSBoundParameters -ErrorAction SilentlyContinue
 
-        # check variable value match
-        if($SMACredential.UserName -ne $credential.UserName)
-        {
-            Write-Verbose "Credential $Name account $($SMACredential.UserName) expected $($credential.UserName)"
-            $Set = $false
-        }
-
-        # check descption match
-        if($SMACredential.Description -ne $Description )
-        {
-            # check description are not supposed to be empty
-            if( !(($SMACredential.Description -eq $null) -and ($Description -eq ""))  )
-            {
-                Write-Verbose "variable $Name Description $($SMACredential.Description) expected $Description"
-                $Set = $false
-            }
-        }
-    }
-    catch
-    {
-        Write-Verbose "Failed to find Credential $Name"
-        $Set = $false
-    }
+    $foundUserName = $SMACredential.UserName
+    $foundDescription = $SMACredential.Description    
     
     $returnValue = @{
         Name = [System.String]$Name
-        credential = [System.Management.Automation.PSCredential]$credential
-        Description = [System.String]$Description
-        Set = [System.Boolean]$Set
+        Credential = [System.Management.Automation.PSCredential]$credential  # return credentials given, because SMA does not return any
+        Description = [System.String]$foundDescription
         WebServiceEndpoint = [System.String]$WebServiceEndpoint
         Port = [System.UInt32]$Port
+        UserName = [System.String]$foundUserName
     }
 
     $returnValue
@@ -125,7 +101,27 @@ function Test-TargetResource
         $Port
     )
 
-    return (Get-TargetResource @PSBoundParameters).Set -eq $true
+    $results = Get-TargetResource @PSBoundParameters
+
+    # check user name value match
+    if($results.UserName -ne $credential.UserName)
+    {
+        Write-Verbose "SMA credential $Name user name $($results.UserName) expected $($credential.UserName)"
+        return $false
+    }
+
+    # check descption match
+    if($results.Description -ne $Description )
+    {
+        # check description are not supposed to be empty
+        if( !(($results.Description -eq $null) -and ($Description -eq ""))  )
+        {
+            Write-Verbose "SMA credential $Name description $($results.Description) expected $Description"
+            return $false
+        }
+    }
+
+    return $true
 }
 
 
