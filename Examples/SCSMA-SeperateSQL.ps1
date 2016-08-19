@@ -1,5 +1,9 @@
 #requires -Version 5
 
+# Suppression of this PSSA rule allowed in examples
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingConvertToSecureStringWithPlainText', '')]
+param()
+
 Configuration SMA
 {
     Import-DscResource -Module xSQLServer
