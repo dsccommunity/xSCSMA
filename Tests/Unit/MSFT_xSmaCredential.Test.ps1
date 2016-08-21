@@ -3,6 +3,10 @@
    MSFT_xSmaCredential unit test.
 #>
 
+# Suppression of this PSSA rule allowed in tests.
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingConvertToSecureStringWithPlainText', '')]
+Param()
+
 $script:DSCModuleName      = 'MSFT_xSmaCredential'
 $script:DSCResourceName    = 'MSFT_xSmaCredential' 
 
