@@ -7,7 +7,7 @@
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingConvertToSecureStringWithPlainText', '')]
 Param()
 
-$script:DSCModuleName      = 'MSFT_xSmaCredential'
+$script:DSCModuleName      = 'xSCSMA'
 $script:DSCResourceName    = 'MSFT_xSmaCredential' 
 
 #region HEADER
@@ -28,18 +28,22 @@ $TestEnvironment = Initialize-TestEnvironment `
 
 #endregion HEADER
 
-$pass = ConvertTo-SecureString 'password' -AsPlainText -Force
-$cred = New-Object System.Management.Automation.PSCredential("account", $pass)
 
-function Get-SmaCredential {}
-function Set-SmaCredential {}
 # Begin Testing
 try
 {
+    #region Pester Test Initialization
+    $pass = ConvertTo-SecureString 'password' -AsPlainText -Force
+    $cred = New-Object System.Management.Automation.PSCredential("account", $pass)
+    
+    function Get-SmaCredential {}
+    function Set-SmaCredential {}
+    #endregion Pester Test Initialization
+
     #region SMA credentials not found
     Describe 'SMA credentials not found' {
-        Mock -CommandName Get-SmaCredential -MockWith { "" } 
-        Mock -CommandName Set-SmaCredential -MockWith { } -Verifiable
+        Mock -CommandName Get-SmaCredential -MockWith { "" } -ModuleName $script:DSCResourceName 
+        Mock -CommandName Set-SmaCredential -MockWith { } -Verifiable -ModuleName $script:DSCResourceName 
 
         $testParameters = @{
             Name = 'CredentialName'
@@ -65,7 +69,7 @@ try
         It 'Set method calls Set-SmaCredential' {
             Set-TargetResource @testParameters
 
-            Assert-MockCalled Set-SmaCredential 
+            Assert-MockCalled Set-SmaCredential -ModuleName $script:DSCResourceName 
         }
     }
     #endregion
@@ -78,8 +82,15 @@ try
             WebServiceEndpoint = 'https://localhost'
         }
 
-        Mock -CommandName Get-SmaCredential -MockWith { @{ Name = $testParameters.Name; UserName = "$($cred.UserName)1"} } 
-        Mock -CommandName Set-SmaCredential -MockWith {  } -Verifiable
+        $badUserName = "$($cred.UserName)1"
+
+        $global:mockWith = @{
+            Name = $stestParameters.Name
+            UserName = $badUserName
+        }
+
+        Mock -CommandName Get-SmaCredential -MockWith { $global:mockWith } -ModuleName $script:DSCResourceName
+        Mock -CommandName Set-SmaCredential -MockWith {  } -Verifiable -ModuleName $script:DSCResourceName 
 
         It 'Get method returns discovered user name' {
             $result = Get-TargetResource @testParameters 
@@ -87,7 +98,7 @@ try
             $result.name | Should Be $testParameters.Name
             $result.credential | should be $testParameters.credential
             $result.Description | should be ""
-            $result.UserName | should be "$($cred.UserName)1"
+            $result.UserName | should be  $badUserName
             $result.WebServiceEndpoint | Should Be $testParameters.WebServiceEndpoint
         }
 
@@ -98,7 +109,7 @@ try
         It 'Set method calls Set-SmaCredential' {
             Set-TargetResource @testParameters
 
-            Assert-MockCalled Set-SmaCredential 
+            Assert-MockCalled Set-SmaCredential -ModuleName $script:DSCResourceName 
         }
     }
     #endregion
@@ -112,8 +123,13 @@ try
             Description = 'Description'
         }
 
-        Mock -CommandName Get-SmaCredential -MockWith { @{ Name = $testParameters.Name; UserName = $cred.UserName; } } 
-        Mock -CommandName Set-SmaCredential -MockWith {  } -Verifiable  
+        $global:mockWith = @{
+            Name = $stestParameters.Name
+            UserName = $cred.UserName
+        }
+
+        Mock -CommandName Get-SmaCredential -MockWith { $global:mockWith } -ModuleName $script:DSCResourceName  
+        Mock -CommandName Set-SmaCredential -MockWith {  } -Verifiable -ModuleName $script:DSCResourceName   
 
         It 'Get method returns blank description ' {
             $result = Get-TargetResource @testParameters 
@@ -132,7 +148,7 @@ try
         It 'Set method calls Set-SmaCredential' {
             Set-TargetResource @testParameters
 
-            Assert-MockCalled Set-SmaCredential 
+            Assert-MockCalled Set-SmaCredential -ModuleName $script:DSCResourceName  
         }
     }
     #endregion
@@ -145,8 +161,14 @@ try
             WebServiceEndpoint = 'https://localhost'
             Description = 'Description'
         }
-        
-        Mock -CommandName Get-SmaCredential -MockWith { @{ Name = $testParameters.Name; UserName = $($cred.UserName); Description = $testParameters.Description} } 
+
+        $global:mockWith = @{
+            Name = $stestParameters.Name
+            UserName = $cred.UserName
+            Description = $testParameters.Description
+        }
+
+        Mock -CommandName Get-SmaCredential -MockWith { $global:mockWith } -ModuleName $script:DSCResourceName  
 
         It 'Get method returns true' {
             $result = Get-TargetResource @testParameters 
@@ -174,5 +196,6 @@ finally
 
     Remove-Item Function:\Get-SmaCredential
     Remove-Item Function:\Set-SmaCredential
+    Remove-Item Variable:\mockWith
 }
 

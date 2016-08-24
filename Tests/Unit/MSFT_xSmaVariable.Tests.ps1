@@ -3,8 +3,8 @@
    Unit test for xSmaVariable DSC Resource
 #>
 
-$Global:DSCModuleName      = 'xSmaVariable' 
-$Global:DSCResourceName    = 'MSFT_xSmaVariable' 
+$Global:DSCModuleName      = 'xSCSMA' 
+$Global:DSCResourceName    = 'MSFT_xSmaVariable'
 
 #region HEADER
 if ( (-not (Test-Path -Path '.\DSCResource.Tests\')) -or `
