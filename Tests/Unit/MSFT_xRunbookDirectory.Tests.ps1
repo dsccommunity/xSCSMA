@@ -3,7 +3,7 @@
    Unit test for xRunbookDirectory DSC Resource
 #>
 
-$Global:DSCModuleName      = 'xRunbookDirectory' 
+$Global:DSCModuleName      = 'xSCSMA' 
 $Global:DSCResourceName    = 'MSFT_xRunbookDirectory' 
 
 #region HEADER

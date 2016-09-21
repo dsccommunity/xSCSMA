@@ -4,6 +4,9 @@
 
 The **xSCSMA** module contains DSC resources for installation of System Center Service Management Automation (SMA). 
 
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
+For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
 ## Contributing
 Please check out common DSC Resources [contributing guidelines](https://github.com/PowerShell/DscResource.Kit/blob/master/CONTRIBUTING.md).
 
@@ -15,6 +18,7 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 * **xSCSMARunbookWorkerServerSetup** installs an SMA Runbook Worker server
 * **xRunbookDirectory** imports Runbook(s) to an SMA instance
 * **xSmaVariable** Imports SMA variable to an SMA instance
+* **xSmaCredential** Imports SMA Credentials to an SMA instance
 
 ### xSCSMAPowerShellSetup
 
@@ -92,9 +96,23 @@ Imports runbook(s) into an SMA instance. The Workflow name is expected to match 
 * **WebServiceEndpoint** (Key) Web service endpoint of SMA instance.
 * **Port** Port to reach the web service endpoint. Defaults to the SMA default of 9090.
 
+### xSmaCredential
+
+* **Name** (Key) Name of credential.
+* **Credential** (Required) Credential object to be imported.
+* **Description** Description of credential.
+* **WebServiceEndpoint** (Required) Web service endpoint of SMA instance.
+* **Port** Port to reach the web service endpoint.
+
 ## Versions
 
 ### Unreleased
+
+### 1.4.0.0
+* Converted appveyor.yml to install Pester from PSGallery instead of from Chocolatey.
+
+* Added new example to show how to use xRunbookDirectory to remove all SMA sample Runbooks
+* Added new resource xSmaCredential.
 
 ### 1.3.0.0
 
@@ -133,9 +151,21 @@ SCSMA-SeperateSQL.ps1 installs all SMA roles on one server and SQL on a separate
 
 SCSMA-MultiInstance.ps1 installs all SMA roles including multiple instances of both Web Service and Runbook Worker servers and SQL on a separate server.
 
+### Remove Sample Runbooks
+
+RemoveSampleRunbooks.ps1 removes SMA's default sample Runbooks.
+
+###  Runbook Directory
+
+RunbookDirectory.ps1 imports all Runbooks found in a directory that start with the name "Start-" and publishes them.
+
+### SMA Variable
+
+SmaVariable.ps1 adds a variable named "Variable" with value "Value" 
+
 Notes:
 
-All three examples use the exact same Configuration and just modify the behavior based on input ConfigurationData.
+The Single Server Installation, Separate SQL, and Multiple Instances examples use the exact same Configuration and just modify the behavior based on input ConfigurationData.
 
 In the Examples folder you will see a version of each file with "-TP" appended to the name. 
 These are the equivalent examples for deployment of System Center Technical Preview on Windows Server Technical Preview.
