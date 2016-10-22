@@ -67,6 +67,11 @@ function Get-TargetResource
         {
             $IdentifyingNumber = "{B2FA6B22-1DDF-4BD4-8B92-ADF17D48262F}"
         }
+        "7.3.150.0"
+        {
+            # System Center Technical Preview 5
+            $IdentifyingNumber = "{B2FA6B22-1DDF-4BD4-8B92-ADF17D48262F}"
+        }
         Default
         {
             throw "Unknown version of Service Management Automation!"
