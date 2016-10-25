@@ -97,6 +97,11 @@ function Get-TargetResource
             # System Center Technical Preview 5
             $IdentifyingNumber = "{4B76B636-AE9A-47D5-A246-E02909D97CF2}"
         }
+        "7.3.345.0"
+        {
+            # System Center 2016 RTM
+            $IdentifyingNumber = "{4B76B636-AE9A-47D5-A246-E02909D97CF2}"
+        }
         Default
         {
             throw "Unknown version of Service Management Automation!"
@@ -248,6 +253,12 @@ function Set-TargetResource
         {
             $IdentifyingNumber = "{4B76B636-AE9A-47D5-A246-E02909D97CF2}"
             $SCVersion = "System Center Technical Preview 5"
+        }
+        "7.3.345.0"
+        {
+            # System Center 2016 RTM
+            $IdentifyingNumber = "{4B76B636-AE9A-47D5-A246-E02909D97CF2}"
+            $SCVersion = "System Center 2016"
         }
         Default
         {
