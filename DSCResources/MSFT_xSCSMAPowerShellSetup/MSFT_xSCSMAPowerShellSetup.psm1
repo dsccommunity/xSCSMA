@@ -42,6 +42,11 @@ function Get-TargetResource
             # System Center Technical Preview 5
             $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
         }
+        "7.3.345.0"
+        {
+            # System Center 2016
+            $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
+        }
         Default
         {
             throw "Unknown version of Service Management Automation!"
@@ -110,6 +115,11 @@ function Set-TargetResource
         "7.3.150.0"
         {
             # System Center Technical Preview 5
+            $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
+        }
+        "7.3.345.0"
+        {
+            # System Center 2016
             $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
         }
         Default
