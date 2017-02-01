@@ -107,6 +107,12 @@ Imports runbook(s) into an SMA instance. The Workflow name is expected to match 
 ## Versions
 
 ### Unreleased
+
+### 1.5.0.0
+
+* Added $IdentifyingNumber for TP5/RTM and small WMI improvements
+
+### 1.4.0.0
 * Converted appveyor.yml to install Pester from PSGallery instead of from Chocolatey.
 
 * Added new example to show how to use xRunbookDirectory to remove all SMA sample Runbooks
