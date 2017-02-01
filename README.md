@@ -108,6 +108,8 @@ Imports runbook(s) into an SMA instance. The Workflow name is expected to match 
 
 ### Unreleased
 
+* Fixed MSFT_xSCSMARunbookWorkerServerSetup and MSFT_xSCSMAWebServiceServerSetup using incorrect executable for version checking.
+
 ### 1.5.0.0
 
 * Added $IdentifyingNumber for TP5/RTM and small WMI improvements
