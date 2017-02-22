@@ -45,6 +45,9 @@ function Get-TargetResource
         $SendCEIPReports = "No",
 
         [System.String]
+        $SendTelemetryReports = "No",
+
+        [System.String]
         $MSUpdate = "No",
 
         [System.String]
@@ -165,6 +168,9 @@ function Set-TargetResource
         $SendCEIPReports = "No",
 
         [System.String]
+        $SendTelemetryReports = "No",
+
+        [System.String]
         $MSUpdate = "No",
 
         [System.String]
@@ -214,7 +220,7 @@ function Set-TargetResource
         "Present"
         {
             # Set defaults, if they couldn't be set in param due to null configdata input
-            foreach($ArgumentVar in ("ETWManifest","SendCEIPReports","MSUpdate"))
+            foreach($ArgumentVar in ("ETWManifest","SendCEIPReports","SendTelemetryReports","MSUpdate"))
             {
                 if((Get-Variable -Name $ArgumentVar).Value -ne "Yes")
                 {
@@ -242,10 +248,21 @@ function Set-TargetResource
                 "SqlDatabase",
                 "InstallFolder",
                 "ETWManifest"
-                "SendCEIPReports",
                 "MSUpdate",
                 "ProductKey"
             )
+            if($SCVersion -eq "System Center 2012 R2")
+            {
+                $ArgumentVars += @(
+                    "SendCEIPReports"
+                )
+            }
+            else
+            {
+                $ArgumentVars += @(
+                    "SendTelemetryReports"
+                )
+            }
             if($SQLInstance -ne "MSSQLSERVER")
             {
                 $ArgumentVars += @(
@@ -350,6 +367,9 @@ function Test-TargetResource
 
         [System.String]
         $SendCEIPReports = "No",
+
+        [System.String]
+        $SendTelemetryReports = "No",
 
         [System.String]
         $MSUpdate = "No",

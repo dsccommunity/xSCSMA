@@ -42,7 +42,7 @@ function Get-TargetResource
             # System Center Technical Preview 5
             $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
         }
-        "7.3.345.0"
+        "7.3.149.0"
         {
             # System Center 2016
             $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
@@ -117,7 +117,7 @@ function Set-TargetResource
             # System Center Technical Preview 5
             $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
         }
-        "7.3.345.0"
+        "7.3.149.0"
         {
             # System Center 2016
             $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"

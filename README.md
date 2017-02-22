@@ -44,16 +44,13 @@ is used for installation of the SMA Web Service server, and has the following pr
 * **SiteName**: Name of the SMA website.
 * **WebServicePort**: Port of the SMA website.
 * **InstallFolder**: Installation folder for SMA.
-* **UseSSL**: Binary value defining whether or not to use SSL.
-* **SpecifyCertificate**: Specify an existing certificate for the SMA web site.
+* **UseSSL**: { Yes | No } Defining whether or not to use SSL.
+* **SpecifyCertificate**: { Yes | No } Specify an existing certificate for the SMA web site.
 * **CertificateName**: Name of the existing certificate to use.
-* **ETWManifest**: Log to ETW.
-* **SendCEIPReports**: { 0 | 1 } 
-0: Do not opt in to the Customer Experience Improvement Program (CEIP). 
-1: Opt in to CEIP.
-* **MSUpdate**: { 0 | 1 } 
-0: Do not opt in to Microsoft Update. 
-1: Opt in to Microsoft Update.
+* **ETWManifest**: { Yes | No } Log to ETW.
+* **SendCEIPReports**: { Yes | No } (System Center 2012 R2 only) Opt in to the Customer Experience Improvement Program.
+* **SendTelemetryReports**: { Yes | No } (System Center 2016 only) Usage and Diagnostics Data sent to Microsoft.
+* **MSUpdate**: { Yes | No } Opt in to Microsoft Update.
 * **ProductKey**: Product key for licensed installations.
 * **RunbookWorkerServers**: Array of Runbook Worker servers in this deployment.
 
@@ -69,13 +66,10 @@ is used for installation of the SMA Web Service server, and has the following pr
 * **SqlInstance**: (Required) Name of the SQL Instance for the SMA database.
 * **SqlDatabase**: Name of the SMA database.
 * **InstallFolder**: Installation folder for SMA.
-* **ETWManifest**: Log to ETW.
-* **SendCEIPReports**: { 0 | 1 } 
-0: Do not opt in to the Customer Experience Improvement Program (CEIP). 
-1: Opt in to CEIP.
-* **MSUpdate**: { 0 | 1 } 
-0: Do not opt in to Microsoft Update. 
-1: Opt in to Microsoft Update.
+* **ETWManifest**: { Yes | No } Log to ETW.
+* **SendCEIPReports**: { Yes | No } (System Center 2012 R2 only) Opt in to the Customer Experience Improvement Program.
+* **SendTelemetryReports**: { Yes | No } (System Center 2016 only) Usage and Diagnostics Data sent to Microsoft.
+* **MSUpdate**: { Yes | No } Opt in to Microsoft Update.
 * **ProductKey**: Product key for licensed installations.
 
 ### xRunbookDirectory

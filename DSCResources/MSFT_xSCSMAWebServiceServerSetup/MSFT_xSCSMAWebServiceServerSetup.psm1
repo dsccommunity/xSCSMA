@@ -67,6 +67,9 @@ function Get-TargetResource
         $SendCEIPReports = "No",
 
         [System.String]
+        $SendTelemetryReports = "No",
+
+        [System.String]
         $MSUpdate = "No",
 
         [System.String]
@@ -222,6 +225,9 @@ function Set-TargetResource
         $SendCEIPReports = "No",
 
         [System.String]
+        $SendTelemetryReports = "No",
+
+        [System.String]
         $MSUpdate = "No",
 
         [System.String]
@@ -278,7 +284,7 @@ function Set-TargetResource
             {
                 $WebServicePort = 9090
             }
-            foreach($ArgumentVar in ("UseSSL","SpecifyCertificate","ETWManifest","SendCEIPReports","MSUpdate"))
+            foreach($ArgumentVar in ("UseSSL","SpecifyCertificate","ETWManifest","SendCEIPReports","SendTelemetryReports","MSUpdate"))
             {
                 if((Get-Variable -Name $ArgumentVar).Value -ne "Yes")
                 {
@@ -307,19 +313,32 @@ function Set-TargetResource
                 Write-Verbose "MSTPath: $MSTPath"
                 $Arguments += " TRANSFORMS=$MSTPath"
             }
-            $Arguments += " ALLUSERS=2 DatabaseAuthentication=Windows UseSSL=Yes"
+            $Arguments += " ALLUSERS=2 DatabaseAuthentication=Windows"
             $ArgumentVars = @(
                 "AdminGroupMembers",
                 "SqlServer",
                 "SqlDatabase",
                 "SiteName",
                 "WebServicePort",
+                "UseSSL",
+                "SpecifyCertificate",
                 "InstallFolder",
                 "ETWManifest"
-                "SendCEIPReports",
                 "MSUpdate",
                 "ProductKey"
             )
+            if($SCVersion -eq "System Center 2012 R2")
+            {
+                $ArgumentVars += @(
+                    "SendCEIPReports"
+                )
+            }
+            else
+            {
+                $ArgumentVars += @(
+                    "SendTelemetryReports"
+                )
+            }
             if($SQLInstance -ne "MSSQLSERVER")
             {
                 $ArgumentVars += @(
@@ -339,8 +358,8 @@ function Set-TargetResource
                     $null = New-SelfSignedCertificate -DnsName $CertificateName -CertStoreLocation "Cert:\LocalMachine\My"
                     $Certificates = @(Get-ChildItem -Path "Cert:\LocalMachine\My" | Where-Object {$_.Subject -eq "CN=$CertificateName"} | Where-Object {$_.EnhancedKeyUsageList.ObjectId -eq "1.3.6.1.5.5.7.3.1"})
                 }
-                $CertificateSerialNumber = $Certificates[0].SerialNumber
-                $ArgumentVars += @("CertificateSerialNumber")
+                $CertificateSerial = $Certificates[0].SerialNumber
+                $ArgumentVars += @("CertificateSerial")
             }
             if($FirstWebServiceServer)
             {
@@ -485,6 +504,9 @@ function Test-TargetResource
 
         [System.String]
         $SendCEIPReports = "No",
+
+        [System.String]
+        $SendTelemetryReports = "No",
 
         [System.String]
         $MSUpdate = "No",
