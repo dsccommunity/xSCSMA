@@ -56,7 +56,7 @@ function Get-TargetResource
 
     Import-Module $PSScriptRoot\..\..\xPDT.psm1
         
-    $Path = Join-Path -Path (Join-Path -Path $SourcePath -ChildPath $SourceFolder) -ChildPath "\SMA\WebServiceSetup.exe"
+    $Path = Join-Path -Path (Join-Path -Path $SourcePath -ChildPath $SourceFolder) -ChildPath "\SMA\WorkerSetup.exe"
     $Path = ResolvePath $Path
     $Version = (Get-Item -Path $Path).VersionInfo.ProductVersion
 
@@ -179,7 +179,7 @@ function Set-TargetResource
 
     Import-Module $PSScriptRoot\..\..\xPDT.psm1
         
-    $Path = Join-Path -Path (Join-Path -Path $SourcePath -ChildPath $SourceFolder) -ChildPath "\SMA\WebServiceSetup.exe"
+    $Path = Join-Path -Path (Join-Path -Path $SourcePath -ChildPath $SourceFolder) -ChildPath "\SMA\WorkerSetup.exe"
     $Path = ResolvePath $Path
     $Version = (Get-Item -Path $Path).VersionInfo.ProductVersion
 
