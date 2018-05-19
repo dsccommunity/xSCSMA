@@ -22,11 +22,11 @@ function Get-TargetResource
     )
 
     Import-Module $PSScriptRoot\..\..\xPDT.psm1
-        
+
     $Path = Join-Path -Path (Join-Path -Path $SourcePath -ChildPath $SourceFolder) -ChildPath "\SetupOrchestrator.exe"
     $Path = ResolvePath $Path
     $Version = (Get-Item -Path $Path).VersionInfo.ProductVersion
-
+    Write-Verbose -Message "Checking for version: $Version"
     switch($Version)
     {
         "7.2.84.0"
@@ -42,9 +42,9 @@ function Get-TargetResource
             # System Center Technical Preview 5
             $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
         }
-        "7.3.345.0"
+        "7.3.149.0"
         {
-            # System Center 2016
+            # System Center Orcehestrator 2016 RTM
             $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
         }
         Default
@@ -97,11 +97,11 @@ function Set-TargetResource
     )
 
     Import-Module $PSScriptRoot\..\..\xPDT.psm1
-        
+
     $Path = Join-Path -Path (Join-Path -Path $SourcePath -ChildPath $SourceFolder) -ChildPath "\SetupOrchestrator.exe"
     $Path = ResolvePath $Path
     $Version = (Get-Item -Path $Path).VersionInfo.ProductVersion
-
+    Write-Verbose -Message "Checking for version: $Version"
     switch($Version)
     {
         "7.2.84.0"
@@ -117,9 +117,9 @@ function Set-TargetResource
             # System Center Technical Preview 5
             $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
         }
-        "7.3.345.0"
+        "7.3.149.0"
         {
-            # System Center 2016
+            # System Center Orcehestrator 2016 RTM
             $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
         }
         Default
@@ -145,14 +145,14 @@ function Set-TargetResource
         {
             $Arguments = "/q /x $IdentifyingNumber"
         }
-    }    
+    }
 
     Write-Verbose "Arguments: $Arguments"
-    
+
     $Process = StartWin32Process -Path $Path -Arguments $Arguments -Credential $SetupCredential
     Write-Verbose $Process
     WaitForWin32ProcessEnd -Path $Path -Arguments $Arguments -Credential $SetupCredential
-    
+
     if((Get-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager' -Name 'PendingFileRenameOperations' -ErrorAction SilentlyContinue) -ne $null)
     {
         $global:DSCMachineStatus = 1
@@ -191,7 +191,7 @@ function Test-TargetResource
     )
 
     $result = ((Get-TargetResource @PSBoundParameters).Ensure -eq $Ensure)
-    
+
     $result
 }
 
