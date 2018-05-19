@@ -129,13 +129,13 @@ function Get-TargetResource
         }
         Write-Verbose -Message "Get-TargetResource: Registry content DB Instance: $SqlInstance"
         $SqlDatabase = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\ServiceManagementAutomation\WebService" -Name "DatabaseName").DatabaseName
-		Write-Verbose -Message "Get-TargetResource: Registry content DB name: $SqlDatabase"
+        Write-Verbose -Message "Get-TargetResource: Registry content DB name: $SqlDatabase"
         $InstallFolder = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\ServiceManagementAutomation\WebService" -Name "InstallationFolder").InstallationFolder
-		Write-Verbose -Message "Get-TargetResource: Registry install folder: $InstallFolder"
+        Write-Verbose -Message "Get-TargetResource: Registry install folder: $InstallFolder"
         $SiteName = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ServiceManagementAutomation\WebService" -Name "IisSiteName").IisSiteName
-		Write-Verbose -Message "Get-TargetResource: Registry site name: $SiteName"
+        Write-Verbose -Message "Get-TargetResource: Registry site name: $SiteName"
         $ApPoolUsername = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ServiceManagementAutomation\WebService" -Name "IisAppPoolAccount").IisAppPoolAccount
-		Write-Verbose -Message "Get-TargetResource: Registry app pool user: $ApPoolUsername"
+        Write-Verbose -Message "Get-TargetResource: Registry app pool user: $ApPoolUsername"
         $AdminGroupMembers = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ServiceManagementAutomation\WebService" -Name "IisAuthorizationAdminGroupMembers").IisAuthorizationAdminGroupMembers
         Write-Verbose -Message "Get-TargetResource: Registry admin group members: $AdminGroupMembers"
         if(!(Get-Module -Name Microsoft.SystemCenter.ServiceManagementAutomation))
@@ -459,7 +459,7 @@ function Set-TargetResource
     else
     {
         Write-Verbose -Message "Testing TargetResource"
-		Write-Verbose -Message "Parameters: $($PSBoundParameters | Out-String)"
+        Write-Verbose -Message "Parameters: $($PSBoundParameters | Out-String)"
         if(!(Test-TargetResource @PSBoundParameters))
         {
             throw "Set-TargetResouce failed"
