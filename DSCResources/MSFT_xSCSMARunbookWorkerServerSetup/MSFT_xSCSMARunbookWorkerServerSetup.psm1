@@ -51,7 +51,7 @@ function Get-TargetResource
         $ProductKey,
 
         [parameter(Mandatory = $true)]
-		[System.String]
+        [System.String]
         $LogMSIinstall,
 
         [System.String]
@@ -182,7 +182,7 @@ function Set-TargetResource
         $ProductKey,
 
         [parameter(Mandatory = $true)]
-		[System.String]
+        [System.String]
         $LogMSIinstall,
 
         [System.String]
@@ -401,7 +401,7 @@ function Test-TargetResource
         $ProductKey,
 
         [parameter(Mandatory = $true)]
-		[System.String]
+        [System.String]
         $LogMSIinstall,
 
         [System.String]
