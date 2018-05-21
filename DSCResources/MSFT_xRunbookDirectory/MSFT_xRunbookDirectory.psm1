@@ -90,7 +90,7 @@ function Get-TargetResource
                 {
                     Write-Verbose ( $LocalizedData.RunbookFoundMatches )
                 }
-                Else
+                else
                 {
                     # Compare-Object sometimes returns new lines as a difference, this can cause repeated re-imports if that new line is at the top of the ps1
                     # since SMA will strip this out on import.

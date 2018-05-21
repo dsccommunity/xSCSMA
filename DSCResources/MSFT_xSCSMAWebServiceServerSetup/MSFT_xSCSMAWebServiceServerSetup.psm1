@@ -75,8 +75,9 @@ function Get-TargetResource
         [System.String[]]
         $RunbookWorkerServers,
 
-        [System.String]
-        $LogMSIinstall = $False,
+        [parameter(Mandatory = $true)]
+		[System.String]
+        $LogMSIinstall,
 
         [System.String]
         $MSIlogPath = $env:LOCALAPPDATA + "\SystemCenter2016\SMA",
@@ -247,8 +248,9 @@ function Set-TargetResource
         [System.String[]]
         $RunbookWorkerServers,
 
-        [System.String]
-        $LogMSIinstall = $False,
+        [parameter(Mandatory = $true)]
+		[System.String]
+        $LogMSIinstall,
 
         [System.String]
         $MSIlogPath = $env:LOCALAPPDATA + "\SystemCenter2016\SMA",
@@ -397,12 +399,12 @@ function Set-TargetResource
                 # Create Path if not exist
                 $logPathName = Join-Path -Path $MSIlogPath -ChildPath $MSIlogName
                 Write-Verbose "MSI install log location: $logPathName"
-                If(!(Test-Path -Path $MSIlogPath))
+                if(!(Test-Path -Path $MSIlogPath))
                 {
                     New-Item -ItemType Directory -Force -Path $MSIlogPath
                 }
-                Else {
-                    If(Test-Path -Path $logPathName) {
+                else {
+                    if(Test-Path -Path $logPathName) {
                         # Remove logfile if exsists
                         Remove-Item -Path $logPathName -Force
                     }
@@ -545,8 +547,9 @@ function Test-TargetResource
         [System.String[]]
         $RunbookWorkerServers,
 
-        [System.String]
-        $LogMSIinstall = $False,
+        [parameter(Mandatory = $true)]
+		[System.String]
+        $LogMSIinstall,
 
         [System.String]
         $MSIlogPath = $env:LOCALAPPDATA + "\SystemCenter2016\SMA",

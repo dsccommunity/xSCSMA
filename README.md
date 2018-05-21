@@ -30,7 +30,7 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 ###xSCSMAWebServiceServerSetup
 is used for installation of the SMA Web Service server, and has the following properties:
 
-* **Ensure**: (Key) Ensures that the SCSCMA Web Service server components are **Present** or **Absent** on the machine. 
+* **Ensure**: (Key) Ensures that the SCSCMA Web Service server components are **Present** or **Absent** on the machine.
 * **SourcePath**: (Required) UNC path to the root of the source files for installation.
 * **SourceFolder**: Folder within the source path containing the source files for installation.
 * **SetupCredential**: (Required) Credential to be used to perform the installation.
@@ -48,14 +48,17 @@ is used for installation of the SMA Web Service server, and has the following pr
 * **SpecifyCertificate**: Specify an existing certificate for the SMA web site.
 * **CertificateName**: Name of the existing certificate to use.
 * **ETWManifest**: Log to ETW.
-* **SendCEIPReports**: { 0 | 1 } 
-0: Do not opt in to the Customer Experience Improvement Program (CEIP). 
+* **SendCEIPReports**: { 0 | 1 }
+0: Do not opt in to the Customer Experience Improvement Program (CEIP).
 1: Opt in to CEIP.
-* **MSUpdate**: { 0 | 1 } 
-0: Do not opt in to Microsoft Update. 
+* **MSUpdate**: { 0 | 1 }
+0: Do not opt in to Microsoft Update.
 1: Opt in to Microsoft Update.
 * **ProductKey**: Product key for licensed installations.
 * **RunbookWorkerServers**: Array of Runbook Worker servers in this deployment.
+* **LogMSIinstall**: Controlls if MSI installation is logged {True | False}.
+* **MSIlogPath**: Path to put MSI logfile in.
+* **MsiLogName**: Name of MSI log file.
 
 ### xSCSMARunbookWorkerServerSetup
 
@@ -70,13 +73,16 @@ is used for installation of the SMA Web Service server, and has the following pr
 * **SqlDatabase**: Name of the SMA database.
 * **InstallFolder**: Installation folder for SMA.
 * **ETWManifest**: Log to ETW.
-* **SendCEIPReports**: { 0 | 1 } 
-0: Do not opt in to the Customer Experience Improvement Program (CEIP). 
+* **SendCEIPReports**: { 0 | 1 }
+0: Do not opt in to the Customer Experience Improvement Program (CEIP).
 1: Opt in to CEIP.
-* **MSUpdate**: { 0 | 1 } 
-0: Do not opt in to Microsoft Update. 
+* **MSUpdate**: { 0 | 1 }
+0: Do not opt in to Microsoft Update.
 1: Opt in to Microsoft Update.
 * **ProductKey**: Product key for licensed installations.
+* **LogMSIinstall**: Controlls if MSI installation is logged {True | False}.
+* **MSIlogPath**: Path to put MSI logfile in.
+* **MsiLogName**: Name of MSI log file.
 
 ### xRunbookDirectory
 Imports runbook(s) into an SMA instance. The Workflow name is expected to match the name of the ps1, and will become the name of the Runbooks.
@@ -85,7 +91,6 @@ Imports runbook(s) into an SMA instance. The Workflow name is expected to match 
 * **Ensure**: (Required) The import state of runbooks found at RunbookPath. This can be Published, Draft, or Absent.
 * **WebServiceEndpoint**: (Key) The web service endpoint of the SMA instance to import the Runbook too.
 * **Port**: Port to reach the web service endpoint. Defaults to the SMA default of 9090.
-* **Port** Port to reach the web service endpoint. Defaults to the SMA default of 9090.
 
 ### xSmaVariable
 
