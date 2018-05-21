@@ -76,7 +76,7 @@ function Get-TargetResource
         $RunbookWorkerServers,
 
         [parameter(Mandatory = $true)]
-		[System.String]
+        [System.String]
         $LogMSIinstall,
 
         [System.String]
@@ -249,7 +249,7 @@ function Set-TargetResource
         $RunbookWorkerServers,
 
         [parameter(Mandatory = $true)]
-		[System.String]
+        [System.String]
         $LogMSIinstall,
 
         [System.String]
@@ -548,7 +548,7 @@ function Test-TargetResource
         $RunbookWorkerServers,
 
         [parameter(Mandatory = $true)]
-		[System.String]
+        [System.String]
         $LogMSIinstall,
 
         [System.String]
