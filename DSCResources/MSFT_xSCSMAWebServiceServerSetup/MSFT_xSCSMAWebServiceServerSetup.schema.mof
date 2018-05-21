@@ -23,7 +23,7 @@ class MSFT_xSCSMAWebServiceServerSetup : OMI_BaseResource
     [Write, Description("Use Microsoft Update.")] String MSUpdate;
     [Write, Description("Product key for licensed installations.")] String ProductKey;
     [Write, Description("Array of Runbook Worker servers in this deployment.")] String RunbookWorkerServers[];
-    [Write, Description("Set to activate logging during install of MSI.")] String LogMSIinstall;
+    [Required, Description("Set to activate logging during install of MSI.")] String LogMSIinstall;
     [Write, Description("Path to log MSI intall.")] String MSIlogPath;
     [Write, Description("Logfile name for MSI install.")] String MsiLogName;
 };
