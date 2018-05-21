@@ -299,7 +299,8 @@ function Set-TargetResource
                     New-Item -ItemType Directory -Force -Path $MSIlogPath
                 }
                 else {
-                    if(Test-Path -Path $logPathName) {
+                    if(Test-Path -Path $logPathName) 
+					{
                         # Remove logfile if exist
                         Remove-Item -Path $logPathName -Force
                     }
