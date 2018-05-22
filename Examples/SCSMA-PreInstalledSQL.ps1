@@ -256,8 +256,7 @@ Configuration SMA
                 UseSSL = $Node.UseSSL
                 SpecifyCertificate = $Node.SpecifyCertificate
                 CertificateName = $Node.CertificateName
-                ProductKey = $Node.SystemCenterProductKey
-                LogMSIinstall = $false
+                ProductKey = $Node.SystemCenterProductKey                
             }
         }
 
