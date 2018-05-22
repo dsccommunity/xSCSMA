@@ -32,30 +32,37 @@ function Get-TargetResource
         [System.String]
         $SqlInstance,
 
+        [parameter()]
         [System.String]
-        $SqlDatabase = "SMA",
+        $SqlDatabase = 'SMA',
 
+        [parameter()]
         [System.String]
         $InstallFolder,
 
+        [parameter()]
         [System.String]
-        $ETWManifest = "Yes",
+        $ETWManifest = 'Yes',
 
+        [parameter()]
         [System.String]
-        $SendCEIPReports = "No",
+        $SendCEIPReports = 'No',
 
+        [parameter()]
         [System.String]
-        $SendTelemetryReports = "No",
+        $SendTelemetryReports = 'No',
 
+        [parameter()]
         [System.String]
         $MSUpdate = "No",
 
+        [parameter()]
         [System.String]
         $ProductKey
     )
 
     Import-Module $PSScriptRoot\..\..\xPDT.psm1
-        
+
     $Path = Join-Path -Path (Join-Path -Path $SourcePath -ChildPath $SourceFolder) -ChildPath "\SMA\WorkerSetup.exe"
     $Path = ResolvePath $Path
     $Version = (Get-Item -Path $Path).VersionInfo.ProductVersion
@@ -130,12 +137,13 @@ function Set-TargetResource
         [parameter(Mandatory = $true)]
         [ValidateSet("Present","Absent")]
         [System.String]
-        $Ensure = "Present",
+        $Ensure = 'Present',
 
         [parameter(Mandatory = $true)]
         [System.String]
         $SourcePath,
 
+        [parameter()]
         [System.String]
         $SourceFolder = "\SystemCenter2012R2\Orchestrator",
 
@@ -155,30 +163,37 @@ function Set-TargetResource
         [System.String]
         $SqlInstance,
 
+        [parameter()]
         [System.String]
-        $SqlDatabase = "SMA",
+        $SqlDatabase = 'SMA',
 
+        [parameter()]
         [System.String]
         $InstallFolder,
 
+        [parameter()]
         [System.String]
-        $ETWManifest = "Yes",
+        $ETWManifest = 'Yes',
 
+        [parameter()]
         [System.String]
-        $SendCEIPReports = "No",
+        $SendCEIPReports = 'No',
 
+        [parameter()]
         [System.String]
-        $SendTelemetryReports = "No",
+        $SendTelemetryReports = 'No',
 
+        [parameter()]
         [System.String]
-        $MSUpdate = "No",
+        $MSUpdate = 'No',
 
+        [parameter()]
         [System.String]
         $ProductKey
     )
 
     Import-Module $PSScriptRoot\..\..\xPDT.psm1
-        
+
     $Path = Join-Path -Path (Join-Path -Path $SourcePath -ChildPath $SourceFolder) -ChildPath "\SMA\WorkerSetup.exe"
     $Path = ResolvePath $Path
     $Version = (Get-Item -Path $Path).VersionInfo.ProductVersion
@@ -282,7 +297,7 @@ function Set-TargetResource
                 $Arguments += " $AccountVar`Account=`"" + (Get-Variable -Name $AccountVar).Value.UserName + "`""
                 $Arguments += " $AccountVar`Password=`"" + (Get-Variable -Name $AccountVar).Value.GetNetworkCredential().Password + "`""
             }
-            
+
             # Replace sensitive values for verbose output
             $Log = $Arguments
             $LogVars = @("Service")
@@ -303,7 +318,7 @@ function Set-TargetResource
 
     Write-Verbose "Path: $Path"
     Write-Verbose "Arguments: $Log"
-    
+
     $Process = StartWin32Process -Path $Path -Arguments $Arguments -Credential $SetupCredential
     Write-Verbose $Process
     WaitForWin32ProcessEnd -Path $Path -Arguments $Arguments -Credential $SetupCredential
@@ -331,7 +346,7 @@ function Test-TargetResource
         [parameter(Mandatory = $true)]
         [ValidateSet("Present","Absent")]
         [System.String]
-        $Ensure = "Present",
+        $Ensure = 'Present',
 
         [parameter(Mandatory = $true)]
         [System.String]
@@ -356,30 +371,37 @@ function Test-TargetResource
         [System.String]
         $SqlInstance,
 
+        [parameter()]
         [System.String]
-        $SqlDatabase = "SMA",
+        $SqlDatabase = 'SMA',
 
+        [parameter()]
         [System.String]
         $InstallFolder,
 
+        [parameter()]
         [System.String]
-        $ETWManifest = "Yes",
+        $ETWManifest = 'Yes',
 
+        [parameter()]
         [System.String]
-        $SendCEIPReports = "No",
+        $SendCEIPReports = 'No',
 
+        [parameter()]
         [System.String]
-        $SendTelemetryReports = "No",
+        $SendTelemetryReports = 'No',
 
+        [parameter()]
         [System.String]
-        $MSUpdate = "No",
+        $MSUpdate = 'No',
 
+        [parameter()]
         [System.String]
         $ProductKey
     )
 
     $result = ((Get-TargetResource @PSBoundParameters).Ensure -eq $Ensure)
-    
+
     $result
 }
 
