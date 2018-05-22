@@ -48,17 +48,7 @@ function Get-TargetResource
         $MSUpdate = "No",
 
         [System.String]
-        $ProductKey,
-
-        [parameter(Mandatory = $true)]
-        [System.String]
-        $LogMSIinstall,
-
-        [System.String]
-        $MSIlogPath = $env:LOCALAPPDATA + "\SystemCenter2016\SMA",
-
-        [System.String]
-        $MsiLogName = "SMAinstall.log"
+        $ProductKey
     )
 
     Import-Module $PSScriptRoot\..\..\xPDT.psm1
@@ -180,10 +170,9 @@ function Set-TargetResource
 
         [System.String]
         $ProductKey,
-
-        [parameter(Mandatory = $true)]
+        
         [System.String]
-        $LogMSIinstall,
+        $LogMSIinstall = $false,
 
         [System.String]
         $MSIlogPath = $env:LOCALAPPDATA + "\SystemCenter2016\SMA",
@@ -300,7 +289,7 @@ function Set-TargetResource
                 }
                 else {
                     if(Test-Path -Path $logPathName) 
-					{
+                    {
                         # Remove logfile if exist
                         Remove-Item -Path $logPathName -Force
                     }
@@ -400,10 +389,9 @@ function Test-TargetResource
 
         [System.String]
         $ProductKey,
-
-        [parameter(Mandatory = $true)]
+        
         [System.String]
-        $LogMSIinstall,
+        $LogMSIinstall = $false,
 
         [System.String]
         $MSIlogPath = $env:LOCALAPPDATA + "\SystemCenter2016\SMA",
