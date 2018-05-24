@@ -110,6 +110,8 @@ function Get-TargetResource
             SqlInstance = $SqlInstance
             SqlDatabase = $SqlDatabase
             InstallFolder = $InstallFolder
+            SendCEIPReports = $SendCEIPReports
+            SendTelemetryReports  = $SendTelemetryReports
         }
     }
     else
