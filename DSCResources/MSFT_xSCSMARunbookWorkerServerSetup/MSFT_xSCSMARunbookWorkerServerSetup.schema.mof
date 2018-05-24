@@ -15,7 +15,7 @@ class MSFT_xSCSMARunbookWorkerServerSetup : OMI_BaseResource
     [Write, Description("Participate in the Customer Experience Improvement Program.")] String SendCEIPReports;
     [Write, Description("Use Microsoft Update.")] String MSUpdate;
     [Write, Description("Product key for licensed installations.")] String ProductKey;
-    [Write, Description("Set to activate logging during install of MSI.")] String LogMSIinstall;
-    [Write, Description("Path to log MSI intall.")] String MSIlogPath;
+    [Write, Description("Set to activate logging during install of MSI.")] String LogMsiInstall;
+    [Write, Description("Path to log file for MSI install.")] String MsiLogPath;
     [Write, Description("Logfile name for MSI install.")] String MsiLogName;
 };
