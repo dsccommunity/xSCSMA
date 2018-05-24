@@ -170,12 +170,12 @@ function Set-TargetResource
 
         [System.String]
         $ProductKey,
-        
-        [System.String]
-        $LogMSIinstall = $false,
 
         [System.String]
-        $MSIlogPath = $env:LOCALAPPDATA + "\SystemCenter2016\SMA",
+        $LogMsiInstall = $false,
+
+        [System.String]
+        $MsiLogPath = $env:LOCALAPPDATA + "\SystemCenter2016\SMA",
 
         [System.String]
         $MsiLogName = "SMAinstall.log"
@@ -279,16 +279,17 @@ function Set-TargetResource
             }
 
             # Check if logging is wanted
-            if($LogMSIinstall) {
+            if($LogMsiInstall) {
                 # Create Path if not exist
-                $logPathName = Join-Path -Path $MSIlogPath -ChildPath $MSIlogName
+                $logPathName = Join-Path -Path $MsiLogPath -ChildPath $MSIlogName
                 Write-Verbose "MSI install log location: $logPathName"
-                if(!(Test-Path -Path $MSIlogPath))
+                if(!(Test-Path -Path $MsiLogPath))
                 {
-                    New-Item -ItemType Directory -Force -Path $MSIlogPath
+                    New-Item -ItemType Directory -Force -Path $MsiLogPath
                 }
-                else {
-                    if(Test-Path -Path $logPathName) 
+                else
+                {
+                    if(Test-Path -Path $logPathName)
                     {
                         # Remove logfile if exist
                         Remove-Item -Path $logPathName -Force
@@ -389,12 +390,12 @@ function Test-TargetResource
 
         [System.String]
         $ProductKey,
-        
-        [System.String]
-        $LogMSIinstall = $false,
 
         [System.String]
-        $MSIlogPath = $env:LOCALAPPDATA + "\SystemCenter2016\SMA",
+        $LogMsiInstall = $false,
+
+        [System.String]
+        $MsiLogPath = $env:LOCALAPPDATA + "\SystemCenter2016\SMA",
 
         [System.String]
         $MsiLogName = "SMAinstall.log"

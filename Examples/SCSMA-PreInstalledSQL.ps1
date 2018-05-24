@@ -45,6 +45,7 @@ $ConfigurationData = @{
 
 Configuration SMA
 {
+    # Add below import if this module is used to create the SQL instance
     #Import-DscResource -Module xSQLServer
     Import-DscResource -Module xSCSMA
     Import-DscResource -ModuleName PSDesiredStateConfiguration
@@ -256,7 +257,7 @@ Configuration SMA
                 UseSSL = $Node.UseSSL
                 SpecifyCertificate = $Node.SpecifyCertificate
                 CertificateName = $Node.CertificateName
-                ProductKey = $Node.SystemCenterProductKey                
+                ProductKey = $Node.SystemCenterProductKey
             }
         }
 
