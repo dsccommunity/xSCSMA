@@ -102,7 +102,7 @@ function Get-TargetResource
         $InstallFolder = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\ServiceManagementAutomation\RunbookWorker" -Name "InstallationFolder").InstallationFolder
 
         $returnValue = @{
-            Ensure = "Present"
+            Ensure = 'Present'
             SourcePath = $SourcePath
             SourceFolder = $SourceFolder
             ServiceUsername = $ServiceUsername
@@ -117,7 +117,7 @@ function Get-TargetResource
     else
     {
         $returnValue = @{
-            Ensure = "Absent"
+            Ensure = 'Absent'
             SourcePath = $SourcePath
             SourceFolder = $SourceFolder
         }
