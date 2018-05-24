@@ -4,59 +4,60 @@ function Get-TargetResource
     [OutputType([System.Collections.Hashtable])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [ValidateSet("Present","Absent")]
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Present','Absent')]
         [System.String]
         $Ensure = "Present",
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SourcePath,
 
+        [Parameter()]
         [System.String]
-        $SourceFolder = "\SystemCenter2012R2\Orchestrator",
+        $SourceFolder = '\SystemCenter2012R2\Orchestrator',
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.PSCredential]
         $SetupCredential,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.PSCredential]
         $Service,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SqlServer,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SqlInstance,
 
-        [parameter()]
+        [Parameter()]
         [System.String]
         $SqlDatabase = 'SMA',
 
-        [parameter()]
+        [Parameter()]
         [System.String]
         $InstallFolder,
 
-        [parameter()]
+        [Parameter()]
         [System.String]
         $ETWManifest = 'Yes',
 
-        [parameter()]
+        [Parameter()]
         [System.String]
         $SendCEIPReports = 'No',
 
-        [parameter()]
+        [Parameter()]
         [System.String]
         $SendTelemetryReports = 'No',
 
-        [parameter()]
+        [Parameter()]
         [System.String]
         $MSUpdate = "No",
 
-        [parameter()]
+        [Parameter()]
         [System.String]
         $ProductKey
     )
@@ -75,11 +76,6 @@ function Get-TargetResource
         }
         "7.2.5002.0"
         {
-            $IdentifyingNumber = "{B2FA6B22-1DDF-4BD4-8B92-ADF17D48262F}"
-        }
-        "7.3.150.0"
-        {
-            # System Center Technical Preview 5
             $IdentifyingNumber = "{B2FA6B22-1DDF-4BD4-8B92-ADF17D48262F}"
         }
         "7.3.345.0"
@@ -134,60 +130,60 @@ function Set-TargetResource
     [CmdletBinding()]
     param
     (
-        [parameter(Mandatory = $true)]
-        [ValidateSet("Present","Absent")]
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Present','Absent')]
         [System.String]
         $Ensure = 'Present',
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SourcePath,
 
-        [parameter()]
+        [Parameter()]
         [System.String]
-        $SourceFolder = "\SystemCenter2012R2\Orchestrator",
+        $SourceFolder = '\SystemCenter2012R2\Orchestrator',
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.PSCredential]
         $SetupCredential,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.PSCredential]
         $Service,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SqlServer,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SqlInstance,
 
-        [parameter()]
+        [Parameter()]
         [System.String]
         $SqlDatabase = 'SMA',
 
-        [parameter()]
+        [Parameter()]
         [System.String]
         $InstallFolder,
 
-        [parameter()]
+        [Parameter()]
         [System.String]
         $ETWManifest = 'Yes',
 
-        [parameter()]
+        [Parameter()]
         [System.String]
         $SendCEIPReports = 'No',
 
-        [parameter()]
+        [Parameter()]
         [System.String]
         $SendTelemetryReports = 'No',
 
-        [parameter()]
+        [Parameter()]
         [System.String]
         $MSUpdate = 'No',
 
-        [parameter()]
+        [Parameter()]
         [System.String]
         $ProductKey
     )
@@ -209,11 +205,6 @@ function Set-TargetResource
         {
             $IdentifyingNumber = "{B2FA6B22-1DDF-4BD4-8B92-ADF17D48262F}"
             $SCVersion = "System Center Technical Preview"
-        }
-        "7.3.150.0"
-        {
-            $IdentifyingNumber = "{B2FA6B22-1DDF-4BD4-8B92-ADF17D48262F}"
-            $SCVersion = "System Center Technical Preview 5"
         }
         "7.3.345.0"
         {
@@ -343,59 +334,60 @@ function Test-TargetResource
     [OutputType([System.Boolean])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [ValidateSet("Present","Absent")]
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Present','Absent')]
         [System.String]
         $Ensure = 'Present',
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SourcePath,
 
+        [Parameter()]
         [System.String]
-        $SourceFolder = "\SystemCenter2012R2\Orchestrator",
+        $SourceFolder = '\SystemCenter2012R2\Orchestrator',
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.PSCredential]
         $SetupCredential,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.PSCredential]
         $Service,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SqlServer,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SqlInstance,
 
-        [parameter()]
+        [Parameter()]
         [System.String]
         $SqlDatabase = 'SMA',
 
-        [parameter()]
+        [Parameter()]
         [System.String]
         $InstallFolder,
 
-        [parameter()]
+        [Parameter()]
         [System.String]
         $ETWManifest = 'Yes',
 
-        [parameter()]
+        [Parameter()]
         [System.String]
         $SendCEIPReports = 'No',
 
-        [parameter()]
+        [Parameter()]
         [System.String]
         $SendTelemetryReports = 'No',
 
-        [parameter()]
+        [Parameter()]
         [System.String]
         $MSUpdate = 'No',
 
-        [parameter()]
+        [Parameter()]
         [System.String]
         $ProductKey
     )
@@ -404,6 +396,5 @@ function Test-TargetResource
 
     $result
 }
-
 
 Export-ModuleMember -Function *-TargetResource
