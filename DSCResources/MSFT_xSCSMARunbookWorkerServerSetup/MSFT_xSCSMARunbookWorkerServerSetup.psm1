@@ -117,6 +117,13 @@ function Get-TargetResource
             Ensure = 'Absent'
             SourcePath = $SourcePath
             SourceFolder = $SourceFolder
+            ServiceUsername = $null
+            SqlServer = $null
+            SqlInstance = $null
+            SqlDatabase = $null
+            InstallFolder = $null
+            SendCEIPReports = $null
+            SendTelemetryReports = $null
         }
     }
 
