@@ -228,11 +228,11 @@ function Set-TargetResource
         "Present"
         {
             # Set defaults, if they couldn't be set in param due to null configdata input
-            foreach($ArgumentVar in ("ETWManifest","SendCEIPReports","SendTelemetryReports","MSUpdate"))
+            foreach ($ArgumentVar in ('ETWManifest','SendCEIPReports','SendTelemetryReports','MSUpdate'))
             {
-                if((Get-Variable -Name $ArgumentVar).Value -ne "Yes")
+                if ((Get-Variable -Name $ArgumentVar).Value -ne 'Yes')
                 {
-                    Set-Variable -Name $ArgumentVar -Value "No"
+                    Set-Variable -Name $ArgumentVar -Value 'No'
                 }
 
             }
