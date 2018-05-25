@@ -7,7 +7,7 @@ function Get-TargetResource
         [Parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure = "Present",
+        $Ensure = 'Present',
 
         [Parameter(Mandatory = $true)]
         [System.String]
@@ -55,7 +55,7 @@ function Get-TargetResource
 
         [Parameter()]
         [System.String]
-        $MSUpdate = "No",
+        $MSUpdate = 'No',
 
         [Parameter()]
         [System.String]
@@ -72,10 +72,7 @@ function Get-TargetResource
     {
         "7.2.1563.0"
         {
-            $IdentifyingNumber = "{B2FA6B22-1DDF-4BD4-8B92-ADF17D48262F}"
-        }
-        "7.2.5002.0"
-        {
+            # System Center 2012 R2
             $IdentifyingNumber = "{B2FA6B22-1DDF-4BD4-8B92-ADF17D48262F}"
         }
         "7.3.345.0"
@@ -111,7 +108,7 @@ function Get-TargetResource
             SqlDatabase = $SqlDatabase
             InstallFolder = $InstallFolder
             SendCEIPReports = $SendCEIPReports
-            SendTelemetryReports  = $SendTelemetryReports
+            SendTelemetryReports = $SendTelemetryReports
         }
     }
     else
@@ -200,13 +197,9 @@ function Set-TargetResource
     {
         "7.2.1563.0"
         {
+            # System Center 2012 R2
             $IdentifyingNumber = "{B2FA6B22-1DDF-4BD4-8B92-ADF17D48262F}"
             $SCVersion = "System Center 2012 R2"
-        }
-        "7.2.5002.0"
-        {
-            $IdentifyingNumber = "{B2FA6B22-1DDF-4BD4-8B92-ADF17D48262F}"
-            $SCVersion = "System Center Technical Preview"
         }
         "7.3.345.0"
         {
