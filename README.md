@@ -2,7 +2,7 @@
 
 # xSCSMA
 
-The **xSCSMA** module contains DSC resources for installation of System Center Service Management Automation (SMA). 
+The **xSCSMA** module contains DSC resources for installation of System Center Service Management Automation (SMA).
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
@@ -13,7 +13,7 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 
 ## Resources
 
-* **xSCSMAPowerShellSetup** installs SMA PowerShell 
+* **xSCSMAPowerShellSetup** installs SMA PowerShell
 * **xSCSMAWebServiceServerSetup** installs an SMA Web Service server
 * **xSCSMARunbookWorkerServerSetup** installs an SMA Runbook Worker server
 * **xRunbookDirectory** imports Runbook(s) to an SMA instance
@@ -22,7 +22,7 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 
 ### xSCSMAPowerShellSetup
 
-* **Ensure**: (Key) Ensures that the SMA PowerShell components are **Present** or **Absent** on the machine. 
+* **Ensure**: (Key) Ensures that the SMA PowerShell components are **Present** or **Absent** on the machine.
 * **SourcePath**: (Required) UNC path to the root of the source files for installation.
 * **SourceFolder**: Folder within the source path containing the source files for installation.
 * **SetupCredential**: (Required) Credential to be used to perform the installation.
@@ -56,8 +56,8 @@ is used for installation of the SMA Web Service server, and has the following pr
 1: Opt in to Microsoft Update.
 * **ProductKey**: Product key for licensed installations.
 * **RunbookWorkerServers**: Array of Runbook Worker servers in this deployment.
-* **LogMSIinstall**: Controlls if MSI installation is logged {True | False}.
-* **MSIlogPath**: Path to put MSI logfile in.
+* **LogMsiInstall**: Controlls if MSI installation is logged {True | False}.
+* **MsiLogPath**: Path to put MSI logfile in.
 * **MsiLogName**: Name of MSI log file.
 
 ### xSCSMARunbookWorkerServerSetup
@@ -80,8 +80,8 @@ is used for installation of the SMA Web Service server, and has the following pr
 0: Do not opt in to Microsoft Update.
 1: Opt in to Microsoft Update.
 * **ProductKey**: Product key for licensed installations.
-* **LogMSIinstall**: Controlls if MSI installation is logged {True | False}.
-* **MSIlogPath**: Path to put MSI logfile in.
+* **LogMsiInstall**: Controlls if MSI installation is logged {True | False}.
+* **MsiLogPath**: Path to put MSI logfile in.
 * **MsiLogName**: Name of MSI log file.
 
 ### xRunbookDirectory
@@ -172,16 +172,16 @@ RunbookDirectory.ps1 imports all Runbooks found in a directory that start with t
 
 ### SMA Variable
 
-SmaVariable.ps1 adds a variable named "Variable" with value "Value" 
+SmaVariable.ps1 adds a variable named "Variable" with value "Value"
 
 Notes:
 
 The Single Server Installation, Separate SQL, and Multiple Instances examples use the exact same Configuration and just modify the behavior based on input ConfigurationData.
 
-In the Examples folder you will see a version of each file with "-TP" appended to the name. 
+In the Examples folder you will see a version of each file with "-TP" appended to the name.
 These are the equivalent examples for deployment of System Center Technical Preview on Windows Server Technical Preview.
 
 The samples require the use of the [Windows Management Framework (WMF) 5.0 Preview.](http://go.microsoft.com/fwlink/?LinkId=398175)
 
-System Center 2012 R2 Service Management Automation Web Service and Runbook Worker installers have a hard check for PowerShell 4.0. 
+System Center 2012 R2 Service Management Automation Web Service and Runbook Worker installers have a hard check for PowerShell 4.0.
 If you are using these resources to install on a system that has WMF 5.0 preview installed, you must copy the transform (MST) files from the Web Service and Runbook Worker DSC resource folders to the SMA installation folder.
