@@ -4,21 +4,18 @@ function Get-TargetResource
     [OutputType([System.Collections.Hashtable])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [ValidateSet("Present","Absent")]
-        [System.String]
-        $Ensure = "Present",
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Present','Absent')]
+        [String]$Ensure = 'Present',
 
-        [parameter(Mandatory = $true)]
-        [System.String]
-        $SourcePath,
+        [Parameter(Mandatory = $true)]
+        [String]$SourcePath,
 
-        [System.String]
-        $SourceFolder = "\SystemCenter2012R2\Orchestrator",
+        [Parameter()]
+        [String]$SourceFolder = '\SystemCenter2012R2\Orchestrator',
 
-        [parameter(Mandatory = $true)]
-        [System.Management.Automation.PSCredential]
-        $SetupCredential
+        [Parameter(Mandatory = $true)]
+        [System.Management.Automation.PSCredential]$SetupCredential
     )
 
     Import-Module $PSScriptRoot\..\..\xPDT.psm1
@@ -31,10 +28,7 @@ function Get-TargetResource
     {
         "7.2.84.0"
         {
-            $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
-        }
-        "7.2.503.0"
-        {
+            # System Center 2012 R2
             $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
         }
         "7.3.149.0"
@@ -68,27 +62,23 @@ function Get-TargetResource
     $returnValue
 }
 
-
 function Set-TargetResource
 {
     [CmdletBinding()]
     param
     (
         [parameter(Mandatory = $true)]
-        [ValidateSet("Present","Absent")]
-        [System.String]
-        $Ensure = "Present",
+        [ValidateSet('Present','Absent')]
+        [String]$Ensure = 'Present',
 
         [parameter(Mandatory = $true)]
-        [System.String]
-        $SourcePath,
+        [String]$SourcePath,
 
-        [System.String]
-        $SourceFolder = "\SystemCenter2012R2\Orchestrator",
+        [parameter()]
+        [String]$SourceFolder = '\SystemCenter2012R2\Orchestrator',
 
         [parameter(Mandatory = $true)]
-        [System.Management.Automation.PSCredential]
-        $SetupCredential
+        [System.Management.Automation.PSCredential]$SetupCredential
     )
 
     Import-Module $PSScriptRoot\..\..\xPDT.psm1
@@ -101,10 +91,7 @@ function Set-TargetResource
     {
         "7.2.84.0"
         {
-            $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
-        }
-        "7.2.503.0"
-        {
+            # System Center 2012 R2
             $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
         }
         "7.3.149.0"
@@ -156,7 +143,6 @@ function Set-TargetResource
     }
 }
 
-
 function Test-TargetResource
 {
     [CmdletBinding()]
@@ -164,20 +150,17 @@ function Test-TargetResource
     param
     (
         [parameter(Mandatory = $true)]
-        [ValidateSet("Present","Absent")]
-        [System.String]
-        $Ensure = "Present",
+        [ValidateSet('Present','Absent')]
+        [String]$Ensure = 'Present',
 
         [parameter(Mandatory = $true)]
-        [System.String]
-        $SourcePath,
+        [String]$SourcePath,
 
-        [System.String]
-        $SourceFolder = "\SystemCenter2012R2\Orchestrator",
+        [parameter()]
+        [String]$SourceFolder = "\SystemCenter2012R2\Orchestrator",
 
         [parameter(Mandatory = $true)]
-        [System.Management.Automation.PSCredential]
-        $SetupCredential
+        [System.Management.Automation.PSCredential]$SetupCredential
     )
 
     $result = ((Get-TargetResource @PSBoundParameters).Ensure -eq $Ensure)
