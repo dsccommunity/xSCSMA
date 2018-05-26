@@ -1,8 +1,8 @@
-data LocalizedData 
-{ 
-    # culture="en-US" 
-    ConvertFrom-StringData -StringData @' 
- FindingRunbookDefinition = Finding runbook definition for {0}. 
+data LocalizedData
+{
+    # culture="en-US"
+    ConvertFrom-StringData -StringData @'
+ FindingRunbookDefinition = Finding runbook definition for {0}.
  ExistinRunbookDefinition = Existing Runbook definition found.
  CreatingTempFile = Creating temp file at {0}.
  RunbookFoundMatches = Runbook found matches. No import needed.
@@ -15,8 +15,8 @@ data LocalizedData
  ImportCount = Import number {0}.
  RemovingRunbook = Removing runbook {0}.
  FailedToRemoveRunbook = Failed to remove Runbook {0}.
-'@ 
-} 
+'@
+}
 
 function Get-TargetResource
 {
@@ -24,21 +24,18 @@ function Get-TargetResource
     [OutputType([System.Collections.Hashtable])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [ValidateSet("Published", "Draft", "Absent")]
-        [System.String]
-        $Ensure = "Published",
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Published', 'Draft', 'Absent')]
+        [String]$Ensure = 'Published',
 
-        [parameter(Mandatory = $true)]
-        [System.String]
-        $RunbookPath,
+        [Parameter(Mandatory = $true)]
+        [String]$RunbookPath,
 
-        [parameter(Mandatory = $true)]
-        [System.String]
-        $WebServiceEndpoint,
+        [Parameter(Mandatory = $true)]
+        [String]$WebServiceEndpoint,
 
-        [Uint32]
-        $Port = 9090
+        [Parameter()]
+        [Uint32]$Port = 9090
     )
 
     $RunbookPathItems = Get-Item $RunbookPath -Filter *.ps1
@@ -73,7 +70,7 @@ function Get-TargetResource
             }
             catch
             {
-                Write-Verbose $_ 
+                Write-Verbose $_
                 $match = $false
             }
 
@@ -127,27 +124,23 @@ function Get-TargetResource
     $returnValue
 }
 
-
 function Set-TargetResource
 {
     [CmdletBinding()]
     param
     (
-        [parameter(Mandatory = $true)]
-        [ValidateSet("Published", "Draft", "Absent")]
-        [System.String]
-        $Ensure = "Published",
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Published', 'Draft', 'Absent')]
+        [String]$Ensure = 'Published',
 
-        [parameter(Mandatory = $true)]
-        [System.String]
-        $RunbookPath,
+        [Parameter(Mandatory = $true)]
+        [String]$RunbookPath,
 
-        [parameter(Mandatory = $true)]
-        [System.String]
-        $WebServiceEndpoint,
+        [Parameter(Mandatory = $true)]
+        [String]$WebServiceEndpoint,
 
-        [Uint32]
-        $Port = 9090
+        [Parameter()]
+        [Uint32]$Port = 9090
     )
 
     $RunbookPathItems = Get-Item $RunbookPath -Filter *.ps1
@@ -186,7 +179,7 @@ function Set-TargetResource
                 catch
                 {
                     Import-SmaRunbook -Path $RunbookPathItem.FullName -WebServiceEndpoint $WebServiceEndpoint -Port $port -ErrorAction Stop
-                }      
+                }
             }
         }
 
@@ -200,28 +193,24 @@ function Set-TargetResource
     }
 }
 
-
 function Test-TargetResource
 {
     [CmdletBinding()]
     [OutputType([System.Boolean])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [ValidateSet("Published", "Draft", "Absent")]
-        [System.String]
-        $Ensure = "Published",
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Published', 'Draft', 'Absent')]
+        [String]$Ensure = "Published",
 
-        [parameter(Mandatory = $true)]
-        [System.String]
-        $RunbookPath,
+        [Parameter(Mandatory = $true)]
+        [String]$RunbookPath,
 
-        [parameter(Mandatory = $true)]
-        [System.String]
-        $WebServiceEndpoint,
+        [Parameter(Mandatory = $true)]
+        [String]$WebServiceEndpoint,
 
-        [Uint32]
-        $Port = 9090
+        [Parameter()]
+        [Uint32]$Port = 9090
     )
 
     $results = Get-TargetResource @PSBoundParameters
@@ -244,7 +233,6 @@ function Test-TargetResource
     Write-Verbose ( $LocalizedData.ImportRequired )
     return $false
 }
-
 
 Export-ModuleMember -Function Get-TargetResource, Set-TargetResource, Test-TargetResource
 

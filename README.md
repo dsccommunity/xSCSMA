@@ -79,7 +79,6 @@ Imports runbook(s) into an SMA instance. The Workflow name is expected to match 
 * **Ensure**: (Required) The import state of runbooks found at RunbookPath. This can be Published, Draft, or Absent.
 * **WebServiceEndpoint**: (Key) The web service endpoint of the SMA instance to import the Runbook too.
 * **Port**: Port to reach the web service endpoint. Default value is 9090.
-* **Port** Port to reach the web service endpoint. Default value is 9090.
 
 ### xSmaVariable
 
@@ -105,7 +104,8 @@ Imports runbook(s) into an SMA instance. The Workflow name is expected to match 
 * Fixed MSFT\_xSCSMARunbookWorkerServerSetup and MSFT\_xSCSMAWebServiceServerSetup using incorrect executable for version checking
 * Added description for new parameters at README.md
 * Remove System Center Technical Preview 5 support. Close issue #18
-* Fix return state of the current SendCEIPReports/SendTelemetryReports.
+* Fix return state of the current SendCEIPReports/SendTelemetryReports
+* Fix syntax at source code
 
 ### 1.5.0.0
 
