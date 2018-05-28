@@ -210,7 +210,7 @@ function Test-TargetResource
         [Parameter(Mandatory = $true)]
         [ValidateSet('Published', 'Draft', 'Absent')]
         [System.String]
-        $Ensure = "Published",
+        $Ensure = 'Published',
 
         [Parameter(Mandatory = $true)]
         [System.String]
