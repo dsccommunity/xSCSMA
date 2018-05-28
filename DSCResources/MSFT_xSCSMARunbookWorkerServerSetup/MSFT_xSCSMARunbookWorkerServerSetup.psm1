@@ -6,46 +6,60 @@ function Get-TargetResource
     (
         [Parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
-        [String]$Ensure = 'Present',
+        [System.String]
+        $Ensure = 'Present',
 
         [Parameter(Mandatory = $true)]
-        [String]$SourcePath,
+        [System.String]
+        $SourcePath,
 
         [Parameter()]
-        [String]$SourceFolder = '\SystemCenter2012R2\Orchestrator',
+        [System.String]
+        $SourceFolder = '\SystemCenter2012R2\Orchestrator',
 
         [Parameter(Mandatory = $true)]
-        [System.Management.Automation.PSCredential]$SetupCredential,
+        [System.Management.Automation.PSCredential]
+        $SetupCredential,
 
         [Parameter(Mandatory = $true)]
-        [System.Management.Automation.PSCredential]$Service,
+        [System.Management.Automation.PSCredential]
+        $Service,
 
         [Parameter(Mandatory = $true)]
-        [String]$SqlServer,
+        [System.String]
+        $SqlServer,
 
         [Parameter(Mandatory = $true)]
-        [String]$SqlInstance,
+        [System.String]
+        $SqlInstance,
 
         [Parameter()]
-        [String]$SqlDatabase = 'SMA',
+        [System.String]
+        $SqlDatabase = 'SMA',
 
         [Parameter()]
-        [String]$InstallFolder,
+        [System.String]
+        $InstallFolder,
 
         [Parameter()]
-        [String]$ETWManifest = 'Yes',
+        [System.String]
+        $ETWManifest = 'Yes',
 
         [Parameter()]
-        [String]$SendCEIPReports = 'No',
+        [System.String]
+        $SendCEIPReports = 'No',
 
         [Parameter()]
-        [String]$SendTelemetryReports = 'No',
+        [System.String]
+        $SendTelemetryReports = 'No',
 
         [Parameter()]
-        [String]$MSUpdate = 'No',
+        [System.String]
+        $MSUpdate = 'No',
 
         [Parameter()]
-        [String]$ProductKey
+        [System.String]
+        $ProductKey
     )
 
     Import-Module $PSScriptRoot\..\..\xPDT.psm1
@@ -123,46 +137,60 @@ function Set-TargetResource
     (
         [Parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
-        [String]$Ensure = 'Present',
+        [System.String]
+        $Ensure = 'Present',
 
         [Parameter(Mandatory = $true)]
-        [String]$SourcePath,
+        [System.String]
+        $SourcePath,
 
         [Parameter()]
-        [String]$SourceFolder = '\SystemCenter2012R2\Orchestrator',
+        [System.String]
+        $SourceFolder = '\SystemCenter2012R2\Orchestrator',
 
         [Parameter(Mandatory = $true)]
-        [System.Management.Automation.PSCredential]$SetupCredential,
+        [System.Management.Automation.PSCredential]
+        $SetupCredential,
 
         [Parameter(Mandatory = $true)]
-        [System.Management.Automation.PSCredential]$Service,
+        [System.Management.Automation.PSCredential]
+        $Service,
 
         [Parameter(Mandatory = $true)]
-        [String]$SqlServer,
+        [System.String]
+        $SqlServer,
 
         [Parameter(Mandatory = $true)]
-        [String]$SqlInstance,
+        [System.String]
+        $SqlInstance,
 
         [Parameter()]
-        [String]$SqlDatabase = 'SMA',
+        [System.String]
+        $SqlDatabase = 'SMA',
 
         [Parameter()]
-        [String]$InstallFolder,
+        [System.String]
+        $InstallFolder,
 
         [Parameter()]
-        [String]$ETWManifest = 'Yes',
+        [System.String]
+        $ETWManifest = 'Yes',
 
         [Parameter()]
-        [String]$SendCEIPReports = 'No',
+        [System.String]
+        $SendCEIPReports = 'No',
 
         [Parameter()]
-        [String]$SendTelemetryReports = 'No',
+        [System.String]
+        $SendTelemetryReports = 'No',
 
         [Parameter()]
-        [String]$MSUpdate = 'No',
+        [System.String]
+        $MSUpdate = 'No',
 
         [Parameter()]
-        [String]$ProductKey
+        [System.String]
+        $ProductKey
     )
 
     Import-Module $PSScriptRoot\..\..\xPDT.psm1
@@ -308,46 +336,60 @@ function Test-TargetResource
     (
         [Parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
-        [String]$Ensure = 'Present',
+        [System.String]
+        $Ensure = 'Present',
 
         [Parameter(Mandatory = $true)]
-        [String]$SourcePath,
+        [System.String]
+        $SourcePath,
 
         [Parameter()]
-        [String]$SourceFolder = '\SystemCenter2012R2\Orchestrator',
+        [System.String]
+        $SourceFolder = '\SystemCenter2012R2\Orchestrator',
 
         [Parameter(Mandatory = $true)]
-        [System.Management.Automation.PSCredential]$SetupCredential,
+        [System.Management.Automation.PSCredential]
+        $SetupCredential,
 
         [Parameter(Mandatory = $true)]
-        [System.Management.Automation.PSCredential]$Service,
+        [System.Management.Automation.PSCredential]
+        $Service,
 
         [Parameter(Mandatory = $true)]
-        [String]$SqlServer,
+        [System.String]
+        $SqlServer,
 
         [Parameter(Mandatory = $true)]
-        [String]$SqlInstance,
+        [System.String]
+        $SqlInstance,
 
         [Parameter()]
-        [String]$SqlDatabase = 'SMA',
+        [System.String]
+        $SqlDatabase = 'SMA',
 
         [Parameter()]
-        [String]$InstallFolder,
+        [System.String]
+        $InstallFolder,
 
         [Parameter()]
-        [String]$ETWManifest = 'Yes',
+        [System.String]
+        $ETWManifest = 'Yes',
 
         [Parameter()]
-        [String]$SendCEIPReports = 'No',
+        [System.String]
+        $SendCEIPReports = 'No',
 
         [Parameter()]
-        [String]$SendTelemetryReports = 'No',
+        [System.String]
+        $SendTelemetryReports = 'No',
 
         [Parameter()]
-        [String]$MSUpdate = 'No',
+        [System.String]
+        $MSUpdate = 'No',
 
         [Parameter()]
-        [String]$ProductKey
+        [System.String]
+        $ProductKey
     )
 
     $result = ((Get-TargetResource @PSBoundParameters).Ensure -eq $Ensure)

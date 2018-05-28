@@ -6,16 +6,20 @@ function Get-TargetResource
     (
         [Parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
-        [String]$Ensure = 'Present',
+        [System.String]
+        $Ensure = 'Present',
 
         [Parameter(Mandatory = $true)]
-        [String]$SourcePath,
+        [System.String]
+        $SourcePath,
 
         [Parameter()]
-        [String]$SourceFolder = '\SystemCenter2012R2\Orchestrator',
+        [System.String]
+        $SourceFolder = '\SystemCenter2012R2\Orchestrator',
 
         [Parameter(Mandatory = $true)]
-        [System.Management.Automation.PSCredential]$SetupCredential
+        [System.Management.Automation.PSCredential]
+        $SetupCredential
     )
 
     Import-Module $PSScriptRoot\..\..\xPDT.psm1
@@ -67,18 +71,22 @@ function Set-TargetResource
     [CmdletBinding()]
     param
     (
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
-        [String]$Ensure = 'Present',
+        [System.String]
+        $Ensure = 'Present',
 
-        [parameter(Mandatory = $true)]
-        [String]$SourcePath,
+        [Parameter(Mandatory = $true)]
+        [System.String]
+        $SourcePath,
 
-        [parameter()]
-        [String]$SourceFolder = '\SystemCenter2012R2\Orchestrator',
+        [Parameter()]
+        [System.String]
+        $SourceFolder = '\SystemCenter2012R2\Orchestrator',
 
-        [parameter(Mandatory = $true)]
-        [System.Management.Automation.PSCredential]$SetupCredential
+        [Parameter(Mandatory = $true)]
+        [System.Management.Automation.PSCredential]
+        $SetupCredential
     )
 
     Import-Module $PSScriptRoot\..\..\xPDT.psm1
@@ -149,24 +157,27 @@ function Test-TargetResource
     [OutputType([System.Boolean])]
     param
     (
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet('Present','Absent')]
-        [String]$Ensure = 'Present',
+        [System.String]
+        $Ensure = 'Present',
 
-        [parameter(Mandatory = $true)]
-        [String]$SourcePath,
+        [Parameter(Mandatory = $true)]
+        [System.String]
+        $SourcePath,
 
-        [parameter()]
-        [String]$SourceFolder = "\SystemCenter2012R2\Orchestrator",
+        [Parameter()]
+        [System.String]
+        $SourceFolder = "\SystemCenter2012R2\Orchestrator",
 
-        [parameter(Mandatory = $true)]
-        [System.Management.Automation.PSCredential]$SetupCredential
+        [Parameter(Mandatory = $true)]
+        [System.Management.Automation.PSCredential]
+        $SetupCredential
     )
 
     $result = ((Get-TargetResource @PSBoundParameters).Ensure -eq $Ensure)
 
     $result
 }
-
 
 Export-ModuleMember -Function *-TargetResource

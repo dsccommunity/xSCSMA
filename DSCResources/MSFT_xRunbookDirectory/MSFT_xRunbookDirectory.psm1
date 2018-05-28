@@ -26,16 +26,20 @@ function Get-TargetResource
     (
         [Parameter(Mandatory = $true)]
         [ValidateSet('Published', 'Draft', 'Absent')]
-        [String]$Ensure = 'Published',
+        [System.String]
+        $Ensure = 'Published',
 
         [Parameter(Mandatory = $true)]
-        [String]$RunbookPath,
+        [System.String]
+        $RunbookPath,
 
         [Parameter(Mandatory = $true)]
-        [String]$WebServiceEndpoint,
+        [System.String]
+        $WebServiceEndpoint,
 
         [Parameter()]
-        [Uint32]$Port = 9090
+        [System.Uint32]
+        $Port = 9090
     )
 
     $RunbookPathItems = Get-Item $RunbookPath -Filter *.ps1
@@ -131,16 +135,20 @@ function Set-TargetResource
     (
         [Parameter(Mandatory = $true)]
         [ValidateSet('Published', 'Draft', 'Absent')]
-        [String]$Ensure = 'Published',
+        [System.String]
+        $Ensure = 'Published',
 
         [Parameter(Mandatory = $true)]
-        [String]$RunbookPath,
+        [System.String]
+        $RunbookPath,
 
         [Parameter(Mandatory = $true)]
-        [String]$WebServiceEndpoint,
+        [System.String]
+        $WebServiceEndpoint,
 
         [Parameter()]
-        [Uint32]$Port = 9090
+        [System.Uint32]
+        $Port = 9090
     )
 
     $RunbookPathItems = Get-Item $RunbookPath -Filter *.ps1
@@ -201,16 +209,20 @@ function Test-TargetResource
     (
         [Parameter(Mandatory = $true)]
         [ValidateSet('Published', 'Draft', 'Absent')]
-        [String]$Ensure = "Published",
+        [System.String]
+        $Ensure = "Published",
 
         [Parameter(Mandatory = $true)]
-        [String]$RunbookPath,
+        [System.String]
+        $RunbookPath,
 
         [Parameter(Mandatory = $true)]
-        [String]$WebServiceEndpoint,
+        [System.String]
+        $WebServiceEndpoint,
 
         [Parameter()]
-        [Uint32]$Port = 9090
+        [System.Uint32]
+        $Port = 9090
     )
 
     $results = Get-TargetResource @PSBoundParameters
@@ -235,4 +247,3 @@ function Test-TargetResource
 }
 
 Export-ModuleMember -Function Get-TargetResource, Set-TargetResource, Test-TargetResource
-
