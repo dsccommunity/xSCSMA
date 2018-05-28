@@ -48,8 +48,7 @@ is used for installation of the SMA Web Service server, and has the following pr
 * **SpecifyCertificate**: { Yes | **No** } Specify an existing certificate for the SMA web site. Default value is **No**.
 * **CertificateName**: Name of the existing certificate to use.
 * **ETWManifest**: { **Yes** | No } Log to ETW. Default value is **Yes**.
-* **SendCEIPReports**: { Yes | **No** } (System Center 2012 R2 only). Opt in to the Customer Experience Improvement Program. Default value is **No**.
-* **SendTelemetryReports**: { Yes | **No** } (System Center 2016 only) Usage and Diagnostics Data sent to Microsoft. Default value is **No**.
+* **SendTelemetryReports**: { Yes | **No** } Usage and Diagnostics Data sent to Microsoft. Default value is **No**.
 * **MSUpdate**: { Yes | **No** } Opt in to Microsoft Update. Default value is **No**.
 * **ProductKey**: Product key for licensed installations.
 * **RunbookWorkerServers**: Array of Runbook Worker servers in this deployment.
@@ -67,8 +66,7 @@ is used for installation of the SMA Web Service server, and has the following pr
 * **SqlDatabase**: Name of the SMA database.
 * **InstallFolder**: Installation folder for SMA.
 * **ETWManifest**: { **Yes** | No } Log to ETW. Default value is **Yes**.
-* **SendCEIPReports**: { Yes | **No** } (System Center 2012 R2 only). Opt in to the Customer Experience Improvement Program. Default value is **No**.
-* **SendTelemetryReports**: { Yes | **No** } (System Center 2016 only) Usage and Diagnostics Data sent to Microsoft. Default value is **No**.
+* **SendTelemetryReports**: { Yes | **No** } Usage and Diagnostics Data sent to Microsoft. Default value is **No**.
 * **MSUpdate**: { Yes | **No** } Opt in to Microsoft Update. Default value is **No**.
 * **ProductKey**: Product key for licensed installations.
 
@@ -102,9 +100,11 @@ Imports runbook(s) into an SMA instance. The Workflow name is expected to match 
 ### Unreleased
 
 * Fixed MSFT\_xSCSMARunbookWorkerServerSetup and MSFT\_xSCSMAWebServiceServerSetup using incorrect executable for version checking
-* Added description for new parameters at README.md
 * Remove System Center Technical Preview 5 support. Close issue #18
-* Fix return state of the current SendCEIPReports/SendTelemetryReports
+* Close issue #19 (always install self-signed certificate)
+* BREAKING CHANGE: change SendCEIPReports parameter to SendTelemetryReports. Close issue #20
+* Added description for new parameters at README.md
+* Fix return state of the current SendTelemetryReports
 * Fix syntax at source code
 
 ### 1.5.0.0

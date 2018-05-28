@@ -75,10 +75,6 @@ function Get-TargetResource
 
         [Parameter()]
         [System.String]
-        $SendCEIPReports = 'No',
-
-        [Parameter()]
-        [System.String]
         $SendTelemetryReports = 'No',
 
         [Parameter()]
@@ -148,7 +144,6 @@ function Get-TargetResource
             SqlDatabase = $SqlDatabase
             SiteName = $SiteName
             InstallFolder = $InstallFolder
-            SendCEIPReports = $SendCEIPReports
             SendTelemetryReports = $SendTelemetryReports
             RunbookWorkerServers = $RunbookWorkerServers
         }
@@ -164,7 +159,6 @@ function Get-TargetResource
             SqlInstance = $null
             SqlDatabase = $null
             InstallFolder = $null
-            SendCEIPReports = $null
             SendTelemetryReports = $null
             RunbookWorkerServers = $null
         }
@@ -249,10 +243,6 @@ function Set-TargetResource
 
         [Parameter()]
         [System.String]
-        $SendCEIPReports = 'No',
-
-        [Parameter()]
-        [System.String]
         $SendTelemetryReports = 'No',
 
         [Parameter()]
@@ -281,6 +271,7 @@ function Set-TargetResource
             # System Center 2012 R2
             $IdentifyingNumber = "{4B76B636-AE9A-47D5-A246-E02909D97CF2}"
             $SCVersion = "System Center 2012 R2"
+            $SendCEIPReports = $SendTelemetryReports
         }
         "7.3.345.0"
         {
@@ -531,10 +522,6 @@ function Test-TargetResource
         [Parameter()]
         [System.String]
         $ETWManifest = 'Yes',
-
-        [Parameter()]
-        [System.String]
-        $SendCEIPReports = 'No',
 
         [Parameter()]
         [System.String]
