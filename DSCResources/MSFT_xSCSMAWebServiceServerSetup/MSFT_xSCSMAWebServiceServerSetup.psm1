@@ -4,80 +4,94 @@ function Get-TargetResource
     [OutputType([System.Collections.Hashtable])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [ValidateSet("Present","Absent")]
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure = "Present",
+        $Ensure = 'Present',
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SourcePath,
 
+        [Parameter()]
         [System.String]
-        $SourceFolder = "\SystemCenter2012R2\Orchestrator",
+        $SourceFolder = '\SystemCenter2012R2\Orchestrator',
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.PSCredential]
         $SetupCredential,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Boolean]
         $FirstWebServiceServer,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.PSCredential]
         $ApPool,
 
+        [Parameter()]
         [System.String]
         $AdminGroupMembers,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SqlServer,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SqlInstance,
 
+        [Parameter()]
         [System.String]
-        $SqlDatabase = "SMA",
+        $SqlDatabase = 'SMA',
 
+        [Parameter()]
         [System.String]
-        $SiteName = "SMA",
+        $SiteName = 'SMA',
 
+        [Parameter()]
         [System.UInt16]
         $WebServicePort = 9090,
 
+        [Parameter()]
         [System.String]
         $InstallFolder,
 
+        [Parameter()]
         [System.String]
-        $UseSSL = "Yes",
+        $UseSSL = 'Yes',
 
+        [Parameter()]
         [System.String]
-        $SpecifyCertificate = "No",
+        $SpecifyCertificate = 'No',
 
+        [Parameter()]
         [System.String]
         $CertificateName = ($env:COMPUTERNAME + "." + (Get-WmiObject -Class Win32_ComputerSystem).Domain),
 
+        [Parameter()]
         [System.String]
-        $ETWManifest = "Yes",
+        $ETWManifest = 'Yes',
 
+        [Parameter()]
         [System.String]
-        $SendCEIPReports = "No",
+        $SendTelemetryReports = 'No',
 
+        [Parameter()]
         [System.String]
-        $MSUpdate = "No",
+        $MSUpdate = 'No',
 
+        [Parameter()]
         [System.String]
         $ProductKey,
 
+        [Parameter()]
         [System.String[]]
         $RunbookWorkerServers
     )
 
     Import-Module $PSScriptRoot\..\..\xPDT.psm1
-        
+
     $Path = Join-Path -Path (Join-Path -Path $SourcePath -ChildPath $SourceFolder) -ChildPath "\SMA\WebServiceSetup.exe"
     $Path = ResolvePath $Path
     $Version = (Get-Item -Path $Path).VersionInfo.ProductVersion
@@ -86,20 +100,12 @@ function Get-TargetResource
     {
         "7.2.1563.0"
         {
-            $IdentifyingNumber = "{4B76B636-AE9A-47D5-A246-E02909D97CF2}"
-        }
-        "7.2.5002.0"
-        {
-            $IdentifyingNumber = "{4B76B636-AE9A-47D5-A246-E02909D97CF2}"
-        }
-        "7.3.150.0"
-        {
-            # System Center Technical Preview 5
+            # System Center 2012 R2
             $IdentifyingNumber = "{4B76B636-AE9A-47D5-A246-E02909D97CF2}"
         }
         "7.3.345.0"
         {
-            # System Center 2016 RTM
+            # System Center 2016
             $IdentifyingNumber = "{4B76B636-AE9A-47D5-A246-E02909D97CF2}"
         }
         Default
@@ -138,6 +144,7 @@ function Get-TargetResource
             SqlDatabase = $SqlDatabase
             SiteName = $SiteName
             InstallFolder = $InstallFolder
+            SendTelemetryReports = $SendTelemetryReports
             RunbookWorkerServers = $RunbookWorkerServers
         }
     }
@@ -147,92 +154,112 @@ function Get-TargetResource
             Ensure = "Absent"
             SourcePath = $SourcePath
             SourceFolder = $SourceFolder
+            ServiceUsername = $null
+            SqlServer = $null
+            SqlInstance = $null
+            SqlDatabase = $null
+            InstallFolder = $null
+            SendTelemetryReports = $null
+            RunbookWorkerServers = $null
         }
     }
 
     $returnValue
 }
 
-
 function Set-TargetResource
 {
     [CmdletBinding()]
     param
     (
-        [parameter(Mandatory = $true)]
-        [ValidateSet("Present","Absent")]
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure = "Present",
+        $Ensure = 'Present',
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SourcePath,
 
+        [Parameter()]
         [System.String]
-        $SourceFolder = "\SystemCenter2012R2\Orchestrator",
+        $SourceFolder = '\SystemCenter2012R2\Orchestrator',
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.PSCredential]
         $SetupCredential,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Boolean]
         $FirstWebServiceServer,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.PSCredential]
         $ApPool,
 
+        [Parameter()]
         [System.String]
         $AdminGroupMembers,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SqlServer,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SqlInstance,
 
+        [Parameter()]
         [System.String]
-        $SqlDatabase = "SMA",
+        $SqlDatabase = 'SMA',
 
+        [Parameter()]
         [System.String]
-        $SiteName = "SMA",
+        $SiteName = 'SMA',
 
+        [Parameter()]
         [System.UInt16]
         $WebServicePort = 9090,
 
+        [Parameter()]
         [System.String]
         $InstallFolder,
 
+        [Parameter()]
         [System.String]
-        $UseSSL = "Yes",
+        $UseSSL = 'Yes',
 
+        [Parameter()]
         [System.String]
-        $SpecifyCertificate = "No",
+        $SpecifyCertificate = 'No',
 
+        [Parameter()]
         [System.String]
         $CertificateName = ($env:COMPUTERNAME + "." + (Get-WmiObject -Class Win32_ComputerSystem).Domain),
 
+        [Parameter()]
         [System.String]
-        $ETWManifest = "Yes",
+        $ETWManifest = 'Yes',
 
+        [Parameter()]
         [System.String]
-        $SendCEIPReports = "No",
+        $SendTelemetryReports = 'No',
 
+        [Parameter()]
         [System.String]
-        $MSUpdate = "No",
+        $MSUpdate = 'No',
 
+        [Parameter()]
         [System.String]
         $ProductKey,
 
+        [Parameter()]
         [System.String[]]
         $RunbookWorkerServers
     )
 
     Import-Module $PSScriptRoot\..\..\xPDT.psm1
-        
+
     $Path = Join-Path -Path (Join-Path -Path $SourcePath -ChildPath $SourceFolder) -ChildPath "\SMA\WebServiceSetup.exe"
     $Path = ResolvePath $Path
     $Version = (Get-Item -Path $Path).VersionInfo.ProductVersion
@@ -241,22 +268,14 @@ function Set-TargetResource
     {
         "7.2.1563.0"
         {
+            # System Center 2012 R2
             $IdentifyingNumber = "{4B76B636-AE9A-47D5-A246-E02909D97CF2}"
             $SCVersion = "System Center 2012 R2"
-        }
-        "7.2.5002.0"
-        {
-            $IdentifyingNumber = "{4B76B636-AE9A-47D5-A246-E02909D97CF2}"
-            $SCVersion = "System Center Technical Preview"
-        }
-        "7.3.150.0"
-        {
-            $IdentifyingNumber = "{4B76B636-AE9A-47D5-A246-E02909D97CF2}"
-            $SCVersion = "System Center Technical Preview 5"
+            $SendCEIPReports = $SendTelemetryReports
         }
         "7.3.345.0"
         {
-            # System Center 2016 RTM
+            # System Center 2016
             $IdentifyingNumber = "{4B76B636-AE9A-47D5-A246-E02909D97CF2}"
             $SCVersion = "System Center 2016"
         }
@@ -278,11 +297,11 @@ function Set-TargetResource
             {
                 $WebServicePort = 9090
             }
-            foreach($ArgumentVar in ("UseSSL","SpecifyCertificate","ETWManifest","SendCEIPReports","MSUpdate"))
+            foreach($ArgumentVar in ('UseSSL','SpecifyCertificate','ETWManifest','SendCEIPReports','SendTelemetryReports','MSUpdate'))
             {
-                if((Get-Variable -Name $ArgumentVar).Value -ne "Yes")
+                if((Get-Variable -Name $ArgumentVar).Value -ne 'Yes')
                 {
-                    Set-Variable -Name $ArgumentVar -Value "No"
+                    Set-Variable -Name $ArgumentVar -Value 'No'
                 }
             }
             if([String]::IsNullOrEmpty($AdminGroupMembers))
@@ -307,19 +326,32 @@ function Set-TargetResource
                 Write-Verbose "MSTPath: $MSTPath"
                 $Arguments += " TRANSFORMS=$MSTPath"
             }
-            $Arguments += " ALLUSERS=2 DatabaseAuthentication=Windows UseSSL=Yes"
+            $Arguments += " ALLUSERS=2 DatabaseAuthentication=Windows"
             $ArgumentVars = @(
                 "AdminGroupMembers",
                 "SqlServer",
                 "SqlDatabase",
                 "SiteName",
                 "WebServicePort",
+                "UseSSL",
+                "SpecifyCertificate",
                 "InstallFolder",
                 "ETWManifest"
-                "SendCEIPReports",
                 "MSUpdate",
                 "ProductKey"
             )
+            if($SCVersion -eq "System Center 2012 R2")
+            {
+                $ArgumentVars += @(
+                    "SendCEIPReports"
+                )
+            }
+            else
+            {
+                $ArgumentVars += @(
+                    "SendTelemetryReports"
+                )
+            }
             if($SQLInstance -ne "MSSQLSERVER")
             {
                 $ArgumentVars += @(
@@ -339,8 +371,8 @@ function Set-TargetResource
                     $null = New-SelfSignedCertificate -DnsName $CertificateName -CertStoreLocation "Cert:\LocalMachine\My"
                     $Certificates = @(Get-ChildItem -Path "Cert:\LocalMachine\My" | Where-Object {$_.Subject -eq "CN=$CertificateName"} | Where-Object {$_.EnhancedKeyUsageList.ObjectId -eq "1.3.6.1.5.5.7.3.1"})
                 }
-                $CertificateSerialNumber = $Certificates[0].SerialNumber
-                $ArgumentVars += @("CertificateSerialNumber")
+                $CertificateSerial = $Certificates[0].SerialNumber
+                $ArgumentVars += @("CertificateSerial")
             }
             if($FirstWebServiceServer)
             {
@@ -363,7 +395,7 @@ function Set-TargetResource
                 $Arguments += " $AccountVar`Account=`"" + (Get-Variable -Name $AccountVar).Value.UserName + "`""
                 $Arguments += " $AccountVar`Password=`"" + (Get-Variable -Name $AccountVar).Value.GetNetworkCredential().Password + "`""
             }
-            
+
             # Replace sensitive values for verbose output
             $Log = $Arguments
             $LogVars = @("ApPool")
@@ -384,7 +416,7 @@ function Set-TargetResource
 
     Write-Verbose "Path: $Path"
     Write-Verbose "Arguments: $Log"
-    
+
     $Process = StartWin32Process -Path $Path -Arguments $Arguments -Credential $SetupCredential
     Write-Verbose $Process
     WaitForWin32ProcessEnd -Path $Path -Arguments $Arguments -Credential $SetupCredential
@@ -417,89 +449,100 @@ function Set-TargetResource
     }
 }
 
-
 function Test-TargetResource
 {
     [CmdletBinding()]
     [OutputType([System.Boolean])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [ValidateSet("Present","Absent")]
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure = "Present",
+        $Ensure = 'Present',
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SourcePath,
 
+        [Parameter()]
         [System.String]
-        $SourceFolder = "\SystemCenter2012R2\Orchestrator",
+        $SourceFolder = '\SystemCenter2012R2\Orchestrator',
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.PSCredential]
         $SetupCredential,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Boolean]
         $FirstWebServiceServer,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.PSCredential]
         $ApPool,
 
+        [Parameter()]
         [System.String]
         $AdminGroupMembers,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SqlServer,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SqlInstance,
 
+        [Parameter()]
         [System.String]
-        $SqlDatabase = "SMA",
+        $SqlDatabase = 'SMA',
 
-        [System.String]
-        $SiteName = "SMA",
+        [Parameter()]
+        [System.String]$SiteName = 'SMA',
 
+        [Parameter()]
         [System.UInt16]
         $WebServicePort = 9090,
 
+        [Parameter()]
         [System.String]
         $InstallFolder,
 
+        [Parameter()]
         [System.String]
-        $UseSSL = "Yes",
+        $UseSSL = 'Yes',
 
+        [Parameter()]
         [System.String]
-        $SpecifyCertificate = "No",
+        $SpecifyCertificate = 'No',
 
+        [Parameter()]
         [System.String]
         $CertificateName = ($env:COMPUTERNAME + "." + (Get-WmiObject -Class Win32_ComputerSystem).Domain),
 
+        [Parameter()]
         [System.String]
-        $ETWManifest = "Yes",
+        $ETWManifest = 'Yes',
 
+        [Parameter()]
         [System.String]
-        $SendCEIPReports = "No",
+        $SendTelemetryReports = 'No',
 
+        [Parameter()]
         [System.String]
-        $MSUpdate = "No",
+        $MSUpdate = 'No',
 
+        [Parameter()]
         [System.String]
         $ProductKey,
 
+        [Parameter()]
         [System.String[]]
         $RunbookWorkerServers
     )
 
     $result = ((Get-TargetResource @PSBoundParameters).Ensure -eq $Ensure)
-    
+
     $result
 }
-
 
 Export-ModuleMember -Function *-TargetResource

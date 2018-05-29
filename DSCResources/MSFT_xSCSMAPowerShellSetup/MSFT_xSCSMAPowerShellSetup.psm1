@@ -4,25 +4,26 @@ function Get-TargetResource
     [OutputType([System.Collections.Hashtable])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [ValidateSet("Present","Absent")]
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure = "Present",
+        $Ensure = 'Present',
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SourcePath,
 
+        [Parameter()]
         [System.String]
-        $SourceFolder = "\SystemCenter2012R2\Orchestrator",
+        $SourceFolder = '\SystemCenter2012R2\Orchestrator',
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.PSCredential]
         $SetupCredential
     )
 
     Import-Module $PSScriptRoot\..\..\xPDT.psm1
-        
+
     $Path = Join-Path -Path (Join-Path -Path $SourcePath -ChildPath $SourceFolder) -ChildPath "\SetupOrchestrator.exe"
     $Path = ResolvePath $Path
     $Version = (Get-Item -Path $Path).VersionInfo.ProductVersion
@@ -31,18 +32,10 @@ function Get-TargetResource
     {
         "7.2.84.0"
         {
+            # System Center 2012 R2
             $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
         }
-        "7.2.503.0"
-        {
-            $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
-        }
-        "7.3.150.0"
-        {
-            # System Center Technical Preview 5
-            $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
-        }
-        "7.3.345.0"
+        "7.3.149.0"
         {
             # System Center 2016
             $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
@@ -73,31 +66,31 @@ function Get-TargetResource
     $returnValue
 }
 
-
 function Set-TargetResource
 {
     [CmdletBinding()]
     param
     (
-        [parameter(Mandatory = $true)]
-        [ValidateSet("Present","Absent")]
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure = "Present",
+        $Ensure = 'Present',
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SourcePath,
 
+        [Parameter()]
         [System.String]
-        $SourceFolder = "\SystemCenter2012R2\Orchestrator",
+        $SourceFolder = '\SystemCenter2012R2\Orchestrator',
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.PSCredential]
         $SetupCredential
     )
 
     Import-Module $PSScriptRoot\..\..\xPDT.psm1
-        
+
     $Path = Join-Path -Path (Join-Path -Path $SourcePath -ChildPath $SourceFolder) -ChildPath "\SetupOrchestrator.exe"
     $Path = ResolvePath $Path
     $Version = (Get-Item -Path $Path).VersionInfo.ProductVersion
@@ -106,18 +99,10 @@ function Set-TargetResource
     {
         "7.2.84.0"
         {
+            # System Center 2012 R2
             $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
         }
-        "7.2.503.0"
-        {
-            $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
-        }
-        "7.3.150.0"
-        {
-            # System Center Technical Preview 5
-            $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
-        }
-        "7.3.345.0"
+        "7.3.149.0"
         {
             # System Center 2016
             $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
@@ -145,14 +130,14 @@ function Set-TargetResource
         {
             $Arguments = "/q /x $IdentifyingNumber"
         }
-    }    
+    }
 
     Write-Verbose "Arguments: $Arguments"
-    
+
     $Process = StartWin32Process -Path $Path -Arguments $Arguments -Credential $SetupCredential
     Write-Verbose $Process
     WaitForWin32ProcessEnd -Path $Path -Arguments $Arguments -Credential $SetupCredential
-    
+
     if((Get-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager' -Name 'PendingFileRenameOperations' -ErrorAction SilentlyContinue) -ne $null)
     {
         $global:DSCMachineStatus = 1
@@ -166,34 +151,33 @@ function Set-TargetResource
     }
 }
 
-
 function Test-TargetResource
 {
     [CmdletBinding()]
     [OutputType([System.Boolean])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [ValidateSet("Present","Absent")]
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure = "Present",
+        $Ensure = 'Present',
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SourcePath,
 
+        [Parameter()]
         [System.String]
         $SourceFolder = "\SystemCenter2012R2\Orchestrator",
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.PSCredential]
         $SetupCredential
     )
 
     $result = ((Get-TargetResource @PSBoundParameters).Ensure -eq $Ensure)
-    
+
     $result
 }
-
 
 Export-ModuleMember -Function *-TargetResource
