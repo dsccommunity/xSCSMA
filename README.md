@@ -44,16 +44,12 @@ is used for installation of the SMA Web Service server, and has the following pr
 * **SiteName**: Name of the SMA website.
 * **WebServicePort**: Port of the SMA website.
 * **InstallFolder**: Installation folder for SMA.
-* **UseSSL**: Binary value defining whether or not to use SSL.
-* **SpecifyCertificate**: Specify an existing certificate for the SMA web site.
+* **UseSSL**: { **Yes** | No } Defining whether or not to use SSL. Default value is **Yes**.
+* **SpecifyCertificate**: { Yes | **No** } Specify an existing certificate for the SMA web site. Default value is **No**.
 * **CertificateName**: Name of the existing certificate to use.
-* **ETWManifest**: Log to ETW.
-* **SendCEIPReports**: { 0 | 1 }
-0: Do not opt in to the Customer Experience Improvement Program (CEIP).
-1: Opt in to CEIP.
-* **MSUpdate**: { 0 | 1 }
-0: Do not opt in to Microsoft Update.
-1: Opt in to Microsoft Update.
+* **ETWManifest**: { **Yes** | No } Log to ETW. Default value is **Yes**.
+* **SendTelemetryReports**: { Yes | **No** } Usage and Diagnostics Data sent to Microsoft. Default value is **No**.
+* **MSUpdate**: { Yes | **No** } Opt in to Microsoft Update. Default value is **No**.
 * **ProductKey**: Product key for licensed installations.
 * **RunbookWorkerServers**: Array of Runbook Worker servers in this deployment.
 * **LogMsiInstall**: Controlls if MSI installation is logged {True | False}.
@@ -72,13 +68,9 @@ is used for installation of the SMA Web Service server, and has the following pr
 * **SqlInstance**: (Required) Name of the SQL Instance for the SMA database.
 * **SqlDatabase**: Name of the SMA database.
 * **InstallFolder**: Installation folder for SMA.
-* **ETWManifest**: Log to ETW.
-* **SendCEIPReports**: { 0 | 1 }
-0: Do not opt in to the Customer Experience Improvement Program (CEIP).
-1: Opt in to CEIP.
-* **MSUpdate**: { 0 | 1 }
-0: Do not opt in to Microsoft Update.
-1: Opt in to Microsoft Update.
+* **ETWManifest**: { **Yes** | No } Log to ETW. Default value is **Yes**.
+* **SendTelemetryReports**: { Yes | **No** } Usage and Diagnostics Data sent to Microsoft. Default value is **No**.
+* **MSUpdate**: { Yes | **No** } Opt in to Microsoft Update. Default value is **No**.
 * **ProductKey**: Product key for licensed installations.
 * **LogMsiInstall**: Controlls if MSI installation is logged {True | False}.
 * **MsiLogPath**: Path to put MSI logfile in.
@@ -90,7 +82,7 @@ Imports runbook(s) into an SMA instance. The Workflow name is expected to match 
 * **RunbookPath**: (Key) Path to Runbook(s) to be imported. Accepts wildcards.
 * **Ensure**: (Required) The import state of runbooks found at RunbookPath. This can be Published, Draft, or Absent.
 * **WebServiceEndpoint**: (Key) The web service endpoint of the SMA instance to import the Runbook too.
-* **Port**: Port to reach the web service endpoint. Defaults to the SMA default of 9090.
+* **Port**: Port to reach the web service endpoint. Default value is 9090.
 
 ### xSmaVariable
 
@@ -99,7 +91,7 @@ Imports runbook(s) into an SMA instance. The Workflow name is expected to match 
 * **Value** (Required) Value of variable.
 * **Description** Description of variable.
 * **WebServiceEndpoint** (Key) Web service endpoint of SMA instance.
-* **Port** Port to reach the web service endpoint. Defaults to the SMA default of 9090.
+* **Port** Port to reach the web service endpoint. Default value is 9090.
 
 ### xSmaCredential
 
@@ -113,7 +105,13 @@ Imports runbook(s) into an SMA instance. The Workflow name is expected to match 
 
 ### Unreleased
 
-* Fixed MSFT_xSCSMARunbookWorkerServerSetup and MSFT_xSCSMAWebServiceServerSetup using incorrect executable for version checking.
+* Fixed MSFT\_xSCSMARunbookWorkerServerSetup and MSFT\_xSCSMAWebServiceServerSetup using incorrect executable for version checking
+* Remove System Center Technical Preview 5 support. Close issue #18
+* Close issue #19 (always install self-signed certificate)
+* BREAKING CHANGE: change SendCEIPReports parameter to SendTelemetryReports. Close issue #20
+* Added description for new parameters at README.md
+* Fix return state of the current SendTelemetryReports
+* Fix syntax at source code
 
 ### 1.5.0.0
 

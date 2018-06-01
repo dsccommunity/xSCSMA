@@ -4,49 +4,56 @@ function Get-TargetResource
     [OutputType([System.Collections.Hashtable])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [ValidateSet("Present","Absent")]
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure = "Present",
+        $Ensure = 'Present',
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SourcePath,
 
+        [Parameter()]
         [System.String]
-        $SourceFolder = "\SystemCenter2012R2\Orchestrator",
+        $SourceFolder = '\SystemCenter2012R2\Orchestrator',
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.PSCredential]
         $SetupCredential,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.PSCredential]
         $Service,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SqlServer,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SqlInstance,
 
+        [Parameter()]
         [System.String]
-        $SqlDatabase = "SMA",
+        $SqlDatabase = 'SMA',
 
+        [Parameter()]
         [System.String]
         $InstallFolder,
 
+        [Parameter()]
         [System.String]
-        $ETWManifest = "Yes",
+        $ETWManifest = 'Yes',
 
+        [Parameter()]
         [System.String]
-        $SendCEIPReports = "No",
+        $SendTelemetryReports = 'No',
 
+        [Parameter()]
         [System.String]
-        $MSUpdate = "No",
+        $MSUpdate = 'No',
 
+        [Parameter()]
         [System.String]
         $ProductKey
     )
@@ -56,26 +63,17 @@ function Get-TargetResource
     $Path = Join-Path -Path (Join-Path -Path $SourcePath -ChildPath $SourceFolder) -ChildPath "\SMA\WorkerSetup.exe"
     $Path = ResolvePath $Path
     $Version = (Get-Item -Path $Path).VersionInfo.ProductVersion
-    Write-Verbose -Message "Checking for version: $Version"
 
     switch($Version)
     {
         "7.2.1563.0"
         {
-            $IdentifyingNumber = "{B2FA6B22-1DDF-4BD4-8B92-ADF17D48262F}"
-        }
-        "7.2.5002.0"
-        {
-            $IdentifyingNumber = "{B2FA6B22-1DDF-4BD4-8B92-ADF17D48262F}"
-        }
-        "7.3.150.0"
-        {
-            # System Center Technical Preview 5
+            # System Center 2012 R2
             $IdentifyingNumber = "{B2FA6B22-1DDF-4BD4-8B92-ADF17D48262F}"
         }
         "7.3.345.0"
         {
-            # System Center 2016 RTM
+            # System Center 2016
             $IdentifyingNumber = "{B2FA6B22-1DDF-4BD4-8B92-ADF17D48262F}"
         }
         Default
@@ -97,7 +95,7 @@ function Get-TargetResource
         $InstallFolder = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\ServiceManagementAutomation\RunbookWorker" -Name "InstallationFolder").InstallationFolder
 
         $returnValue = @{
-            Ensure = "Present"
+            Ensure = 'Present'
             SourcePath = $SourcePath
             SourceFolder = $SourceFolder
             ServiceUsername = $ServiceUsername
@@ -105,69 +103,82 @@ function Get-TargetResource
             SqlInstance = $SqlInstance
             SqlDatabase = $SqlDatabase
             InstallFolder = $InstallFolder
+            SendTelemetryReports = $SendTelemetryReports
         }
     }
     else
     {
         $returnValue = @{
-            Ensure = "Absent"
+            Ensure = 'Absent'
             SourcePath = $SourcePath
             SourceFolder = $SourceFolder
+            ServiceUsername = $null
+            SqlServer = $null
+            SqlInstance = $null
+            SqlDatabase = $null
+            InstallFolder = $null
+            SendTelemetryReports = $null
         }
     }
 
     $returnValue
 }
 
-
 function Set-TargetResource
 {
     [CmdletBinding()]
     param
     (
-        [parameter(Mandatory = $true)]
-        [ValidateSet("Present","Absent")]
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure = "Present",
+        $Ensure = 'Present',
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SourcePath,
 
+        [Parameter()]
         [System.String]
-        $SourceFolder = "\SystemCenter2012R2\Orchestrator",
+        $SourceFolder = '\SystemCenter2012R2\Orchestrator',
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.PSCredential]
         $SetupCredential,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.PSCredential]
         $Service,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SqlServer,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SqlInstance,
 
+        [Parameter()]
         [System.String]
-        $SqlDatabase = "SMA",
+        $SqlDatabase = 'SMA',
 
+        [Parameter()]
         [System.String]
         $InstallFolder,
 
+        [Parameter()]
         [System.String]
-        $ETWManifest = "Yes",
+        $ETWManifest = 'Yes',
 
+        [Parameter()]
         [System.String]
-        $SendCEIPReports = "No",
+        $SendTelemetryReports = 'No',
 
+        [Parameter()]
         [System.String]
-        $MSUpdate = "No",
+        $MSUpdate = 'No',
 
+        [Parameter()]
         [System.String]
         $ProductKey,
 
@@ -186,28 +197,19 @@ function Set-TargetResource
     $Path = Join-Path -Path (Join-Path -Path $SourcePath -ChildPath $SourceFolder) -ChildPath "\SMA\WorkerSetup.exe"
     $Path = ResolvePath $Path
     $Version = (Get-Item -Path $Path).VersionInfo.ProductVersion
-    Write-Verbose -Message "Checking for version: $Version"
 
     switch($Version)
     {
         "7.2.1563.0"
         {
+            # System Center 2012 R2
             $IdentifyingNumber = "{B2FA6B22-1DDF-4BD4-8B92-ADF17D48262F}"
             $SCVersion = "System Center 2012 R2"
-        }
-        "7.2.5002.0"
-        {
-            $IdentifyingNumber = "{B2FA6B22-1DDF-4BD4-8B92-ADF17D48262F}"
-            $SCVersion = "System Center Technical Preview"
-        }
-        "7.3.150.0"
-        {
-            $IdentifyingNumber = "{B2FA6B22-1DDF-4BD4-8B92-ADF17D48262F}"
-            $SCVersion = "System Center Technical Preview 5"
+            $SendCEIPReports = $SendTelemetryReports
         }
         "7.3.345.0"
         {
-            # System Center 2016 RTM
+            # System Center 2016
             $IdentifyingNumber = "{B2FA6B22-1DDF-4BD4-8B92-ADF17D48262F}"
             $SCVersion = "System Center 2016"
         }
@@ -225,11 +227,11 @@ function Set-TargetResource
         "Present"
         {
             # Set defaults, if they couldn't be set in param due to null configdata input
-            foreach($ArgumentVar in ("ETWManifest","SendCEIPReports","MSUpdate"))
+            foreach ($ArgumentVar in ('ETWManifest','SendCEIPReports','SendTelemetryReports','MSUpdate'))
             {
-                if((Get-Variable -Name $ArgumentVar).Value -ne "Yes")
+                if ((Get-Variable -Name $ArgumentVar).Value -ne 'Yes')
                 {
-                    Set-Variable -Name $ArgumentVar -Value "No"
+                    Set-Variable -Name $ArgumentVar -Value 'No'
                 }
 
             }
@@ -240,7 +242,6 @@ function Set-TargetResource
 
             # Create install arguments
             $Arguments = "/q /i $MSIPath"
-
             if(($PSVersionTable.PSVersion.Major -eq 5) -and ($SCVersion -eq "System Center 2012 R2"))
             {
                 $MSTPath = Join-Path -Path (Join-Path -Path $SourcePath -ChildPath $SourceFolder) -ChildPath "\SMA\WMF5Worker.mst"
@@ -254,10 +255,21 @@ function Set-TargetResource
                 "SqlDatabase",
                 "InstallFolder",
                 "ETWManifest"
-                "SendCEIPReports",
                 "MSUpdate",
                 "ProductKey"
             )
+            if($SCVersion -eq "System Center 2012 R2")
+            {
+                $ArgumentVars += @(
+                    "SendCEIPReports"
+                )
+            }
+            else
+            {
+                $ArgumentVars += @(
+                    "SendTelemetryReports"
+                )
+            }
             if($SQLInstance -ne "MSSQLSERVER")
             {
                 $ArgumentVars += @(
@@ -277,7 +289,6 @@ function Set-TargetResource
                 $Arguments += " $AccountVar`Account=`"" + (Get-Variable -Name $AccountVar).Value.UserName + "`""
                 $Arguments += " $AccountVar`Password=`"" + (Get-Variable -Name $AccountVar).Value.GetNetworkCredential().Password + "`""
             }
-
             # Check if logging is wanted
             if($LogMsiInstall) {
                 # Create Path if not exist
@@ -298,7 +309,6 @@ function Set-TargetResource
                 Write-Verbose -Message "MSI logfile: $logPathName"
                 $Arguments += " /L*V ""$logPathName"""
             }
-
             # Replace sensitive values for verbose output
             $Log = $Arguments
             $LogVars = @("Service")
@@ -309,7 +319,6 @@ function Set-TargetResource
                     $Log = $Log.Replace((Get-Variable -Name $LogVar).Value.GetNetworkCredential().Password,"********")
                 }
             }
-
         }
         "Absent"
         {
@@ -338,56 +347,62 @@ function Set-TargetResource
     }
 }
 
-
 function Test-TargetResource
 {
     [CmdletBinding()]
     [OutputType([System.Boolean])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [ValidateSet("Present","Absent")]
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('Present','Absent')]
         [System.String]
-        $Ensure = "Present",
+        $Ensure = 'Present',
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SourcePath,
 
+        [Parameter()]
         [System.String]
-        $SourceFolder = "\SystemCenter2012R2\Orchestrator",
+        $SourceFolder = '\SystemCenter2012R2\Orchestrator',
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.PSCredential]
         $SetupCredential,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.Management.Automation.PSCredential]
         $Service,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SqlServer,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $SqlInstance,
 
+        [Parameter()]
         [System.String]
-        $SqlDatabase = "SMA",
+        $SqlDatabase = 'SMA',
 
+        [Parameter()]
         [System.String]
         $InstallFolder,
 
+        [Parameter()]
         [System.String]
-        $ETWManifest = "Yes",
+        $ETWManifest = 'Yes',
 
+        [Parameter()]
         [System.String]
-        $SendCEIPReports = "No",
+        $SendTelemetryReports = 'No',
 
+        [Parameter()]
         [System.String]
-        $MSUpdate = "No",
+        $MSUpdate = 'No',
 
+        [Parameter()]
         [System.String]
         $ProductKey,
 
@@ -405,6 +420,5 @@ function Test-TargetResource
 
     $result
 }
-
 
 Export-ModuleMember -Function *-TargetResource
