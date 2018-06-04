@@ -105,6 +105,8 @@ Imports runbook(s) into an SMA instance. The Workflow name is expected to match 
 
 ### Unreleased
 
+* Added MSI install logging for MSFT_xSCSMARunbookWorkerServerSetup and MSFT_xSCSMARunbookWorkerServerSetup
+* Added missing -Port parameter argument for New-SmaRunbookWorkerDeployment in MSFT_xSCSMARunbookWorkerServerSetup
 * Fixed MSFT\_xSCSMARunbookWorkerServerSetup and MSFT\_xSCSMAWebServiceServerSetup using incorrect executable for version checking
 * Remove System Center Technical Preview 5 support. Close issue #18
 * Close issue #19 (always install self-signed certificate)
