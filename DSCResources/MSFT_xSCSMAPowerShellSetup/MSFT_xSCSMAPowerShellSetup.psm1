@@ -27,7 +27,7 @@ function Get-TargetResource
     $Path = Join-Path -Path (Join-Path -Path $SourcePath -ChildPath $SourceFolder) -ChildPath "\SetupOrchestrator.exe"
     $Path = ResolvePath $Path
     $Version = (Get-Item -Path $Path).VersionInfo.ProductVersion
-
+    Write-Verbose -Message "Checking for version: $Version"
     switch($Version)
     {
         "7.2.84.0"
@@ -37,7 +37,7 @@ function Get-TargetResource
         }
         "7.3.149.0"
         {
-            # System Center 2016
+            # System Center Orcehestrator 2016 RTM
             $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
         }
         Default
@@ -94,7 +94,7 @@ function Set-TargetResource
     $Path = Join-Path -Path (Join-Path -Path $SourcePath -ChildPath $SourceFolder) -ChildPath "\SetupOrchestrator.exe"
     $Path = ResolvePath $Path
     $Version = (Get-Item -Path $Path).VersionInfo.ProductVersion
-
+    Write-Verbose -Message "Checking for version: $Version"
     switch($Version)
     {
         "7.2.84.0"
@@ -104,7 +104,7 @@ function Set-TargetResource
         }
         "7.3.149.0"
         {
-            # System Center 2016
+            # System Center Orcehestrator 2016 RTM
             $IdentifyingNumber = "{EF2760C1-FED5-45FD-B067-D9419F7DEBEF}"
         }
         Default

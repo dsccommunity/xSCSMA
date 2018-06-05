@@ -180,7 +180,16 @@ function Set-TargetResource
 
         [Parameter()]
         [System.String]
-        $ProductKey
+        $ProductKey,
+
+        [System.String]
+        $LogMsiInstall = $false,
+
+        [System.String]
+        $MsiLogPath = $env:LOCALAPPDATA + "\SystemCenter2016\SMA",
+
+        [System.String]
+        $MsiLogName = "SMAinstall.log"
     )
 
     Import-Module $PSScriptRoot\..\..\xPDT.psm1
@@ -210,7 +219,7 @@ function Set-TargetResource
         }
     }
 
-    $Path = "msiexec.exe"
+    $Path = "$env:windir\system32\msiexec.exe"
     $Path = ResolvePath $Path
 
     switch($Ensure)
@@ -280,7 +289,26 @@ function Set-TargetResource
                 $Arguments += " $AccountVar`Account=`"" + (Get-Variable -Name $AccountVar).Value.UserName + "`""
                 $Arguments += " $AccountVar`Password=`"" + (Get-Variable -Name $AccountVar).Value.GetNetworkCredential().Password + "`""
             }
-
+            # Check if logging is wanted
+            if($LogMsiInstall) {
+                # Create Path if not exist
+                $logPathName = Join-Path -Path $MsiLogPath -ChildPath $MSIlogName
+                Write-Verbose "MSI install log location: $logPathName"
+                if(!(Test-Path -Path $MsiLogPath))
+                {
+                    New-Item -ItemType Directory -Force -Path $MsiLogPath
+                }
+                else
+                {
+                    if(Test-Path -Path $logPathName)
+                    {
+                        # Remove logfile if exist
+                        Remove-Item -Path $logPathName -Force
+                    }
+                }
+                Write-Verbose -Message "MSI logfile: $logPathName"
+                $Arguments += " /L*V ""$logPathName"""
+            }
             # Replace sensitive values for verbose output
             $Log = $Arguments
             $LogVars = @("Service")
@@ -376,7 +404,16 @@ function Test-TargetResource
 
         [Parameter()]
         [System.String]
-        $ProductKey
+        $ProductKey,
+
+        [System.String]
+        $LogMsiInstall = $false,
+
+        [System.String]
+        $MsiLogPath = $env:LOCALAPPDATA + "\SystemCenter2016\SMA",
+
+        [System.String]
+        $MsiLogName = "SMAinstall.log"
     )
 
     $result = ((Get-TargetResource @PSBoundParameters).Ensure -eq $Ensure)

@@ -52,6 +52,9 @@ is used for installation of the SMA Web Service server, and has the following pr
 * **MSUpdate**: { Yes | **No** } Opt in to Microsoft Update. Default value is **No**.
 * **ProductKey**: Product key for licensed installations.
 * **RunbookWorkerServers**: Array of Runbook Worker servers in this deployment.
+* **LogMsiInstall**: Controlls if MSI installation is logged {True | False}.
+* **MsiLogPath**: Path to put MSI logfile in.
+* **MsiLogName**: Name of MSI log file.
 
 ### xSCSMARunbookWorkerServerSetup
 
@@ -69,6 +72,9 @@ is used for installation of the SMA Web Service server, and has the following pr
 * **SendTelemetryReports**: { Yes | **No** } Usage and Diagnostics Data sent to Microsoft. Default value is **No**.
 * **MSUpdate**: { Yes | **No** } Opt in to Microsoft Update. Default value is **No**.
 * **ProductKey**: Product key for licensed installations.
+* **LogMsiInstall**: Controlls if MSI installation is logged {True | False}.
+* **MsiLogPath**: Path to put MSI logfile in.
+* **MsiLogName**: Name of MSI log file.
 
 ### xRunbookDirectory
 Imports runbook(s) into an SMA instance. The Workflow name is expected to match the name of the ps1, and will become the name of the Runbooks.
@@ -99,6 +105,8 @@ Imports runbook(s) into an SMA instance. The Workflow name is expected to match 
 
 ### Unreleased
 
+* Added MSI install logging for MSFT_xSCSMARunbookWorkerServerSetup and MSFT_xSCSMARunbookWorkerServerSetup
+* Added missing -Port parameter argument for New-SmaRunbookWorkerDeployment in MSFT_xSCSMARunbookWorkerServerSetup
 * Fixed MSFT\_xSCSMARunbookWorkerServerSetup and MSFT\_xSCSMAWebServiceServerSetup using incorrect executable for version checking
 * Remove System Center Technical Preview 5 support. Close issue #18
 * Close issue #19 (always install self-signed certificate)

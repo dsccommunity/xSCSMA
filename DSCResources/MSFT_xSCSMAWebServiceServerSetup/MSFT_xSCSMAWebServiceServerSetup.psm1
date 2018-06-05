@@ -95,6 +95,7 @@ function Get-TargetResource
     $Path = Join-Path -Path (Join-Path -Path $SourcePath -ChildPath $SourceFolder) -ChildPath "\SMA\WebServiceSetup.exe"
     $Path = ResolvePath $Path
     $Version = (Get-Item -Path $Path).VersionInfo.ProductVersion
+    Write-Verbose -Message "Checking for version: $Version"
 
     switch($Version)
     {
@@ -117,21 +118,28 @@ function Get-TargetResource
     if(Get-WmiObject -Class win32_product -Filter "IdentifyingNumber='$IdentifyingNumber'")
     {
         $SqlServer = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\ServiceManagementAutomation\WebService" -Name "DatabaseServerName").DatabaseServerName
+        Write-Verbose -Message "Get-TargetResource: Registry content DB: $SqlServer"
         $SqlInstance = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\ServiceManagementAutomation\WebService" -Name "DatabaseServerInstance").DatabaseServerInstance
         if([String]::IsNullOrEmpty($SqlInstance))
         {
             $SqlInstance = "MSSQLSERVER"
         }
+        Write-Verbose -Message "Get-TargetResource: Registry content DB Instance: $SqlInstance"
         $SqlDatabase = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\ServiceManagementAutomation\WebService" -Name "DatabaseName").DatabaseName
+        Write-Verbose -Message "Get-TargetResource: Registry content DB name: $SqlDatabase"
         $InstallFolder = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\ServiceManagementAutomation\WebService" -Name "InstallationFolder").InstallationFolder
+        Write-Verbose -Message "Get-TargetResource: Registry install folder: $InstallFolder"
         $SiteName = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ServiceManagementAutomation\WebService" -Name "IisSiteName").IisSiteName
+        Write-Verbose -Message "Get-TargetResource: Registry site name: $SiteName"
         $ApPoolUsername = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ServiceManagementAutomation\WebService" -Name "IisAppPoolAccount").IisAppPoolAccount
+        Write-Verbose -Message "Get-TargetResource: Registry app pool user: $ApPoolUsername"
         $AdminGroupMembers = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\ServiceManagementAutomation\WebService" -Name "IisAuthorizationAdminGroupMembers").IisAuthorizationAdminGroupMembers
+        Write-Verbose -Message "Get-TargetResource: Registry admin group members: $AdminGroupMembers"
         if(!(Get-Module -Name Microsoft.SystemCenter.ServiceManagementAutomation))
         {
             Import-Module -Name Microsoft.SystemCenter.ServiceManagementAutomation
         }
-        $RunbookWorkerServers = (Get-SmaRunbookWorkerDeployment -WebServiceEndpoint https://localhost).ComputerName
+        $RunbookWorkerServers = (Get-SmaRunbookWorkerDeployment -WebServiceEndpoint https://localhost -Port $WebServicePort).ComputerName
 
         $returnValue = @{
             Ensure = "Present"
@@ -255,7 +263,16 @@ function Set-TargetResource
 
         [Parameter()]
         [System.String[]]
-        $RunbookWorkerServers
+        $RunbookWorkerServers,
+
+        [System.String]
+        $LogMsiInstall = $false,
+
+        [System.String]
+        $MsiLogPath = $env:LOCALAPPDATA + "\SystemCenter2016\SMA",
+
+        [System.String]
+        $MsiLogName = "SMAinstall.log"
     )
 
     Import-Module $PSScriptRoot\..\..\xPDT.psm1
@@ -263,6 +280,7 @@ function Set-TargetResource
     $Path = Join-Path -Path (Join-Path -Path $SourcePath -ChildPath $SourceFolder) -ChildPath "\SMA\WebServiceSetup.exe"
     $Path = ResolvePath $Path
     $Version = (Get-Item -Path $Path).VersionInfo.ProductVersion
+    Write-Verbose -Message "Checking for version: $Version"
 
     switch($Version)
     {
@@ -285,7 +303,7 @@ function Set-TargetResource
         }
     }
 
-    $Path = "msiexec.exe"
+    $Path = "$env:windir\system32\msiexec.exe"
     $Path = ResolvePath $Path
 
     switch($Ensure)
@@ -319,6 +337,7 @@ function Set-TargetResource
 
             # Create install arguments
             $Arguments = "/q /i $MSIPath"
+
             if(($PSVersionTable.PSVersion.Major -eq 5) -and ($SCVersion -eq "System Center 2012 R2"))
             {
                 $MSTPath = Join-Path -Path (Join-Path -Path $SourcePath -ChildPath $SourceFolder) -ChildPath "\SMA\WMF5WebService.mst"
@@ -396,6 +415,28 @@ function Set-TargetResource
                 $Arguments += " $AccountVar`Password=`"" + (Get-Variable -Name $AccountVar).Value.GetNetworkCredential().Password + "`""
             }
 
+            # Check if logging is wanted
+            if($LogMsiInstall)
+            {
+                # Create Path if not exist
+                $logPathName = Join-Path -Path $MsiLogPath -ChildPath $MSIlogName
+                Write-Verbose "MSI install log location: $logPathName"
+                if(!(Test-Path -Path $MsiLogPath))
+                {
+                    New-Item -ItemType Directory -Force -Path $MsiLogPath
+                }
+                else
+                {
+                    if(Test-Path -Path $logPathName)
+                    {
+                        # Remove logfile if exsists
+                        Remove-Item -Path $logPathName -Force
+                    }
+                }
+                Write-Verbose -Message "MSI logfile: $logPathName"
+                $Arguments += " /L*V ""$logPathName"""
+            }
+
             # Replace sensitive values for verbose output
             $Log = $Arguments
             $LogVars = @("ApPool")
@@ -406,6 +447,7 @@ function Set-TargetResource
                     $Log = $Log.Replace((Get-Variable -Name $LogVar).Value.GetNetworkCredential().Password,"********")
                 }
             }
+
         }
         "Absent"
         {
@@ -432,7 +474,7 @@ function Set-TargetResource
             {
                 $Workers += $RunbookWorkerServer.Split(".")[0]
             }
-            New-SmaRunbookWorkerDeployment -WebServiceEndpoint https://localhost -ComputerName $Workers
+            New-SmaRunbookWorkerDeployment -WebServiceEndpoint https://localhost -Port $WebServicePort -ComputerName $Workers
         }
     }
 
@@ -442,6 +484,8 @@ function Set-TargetResource
     }
     else
     {
+        Write-Verbose -Message "Testing TargetResource"
+        Write-Verbose -Message "Parameters: $($PSBoundParameters | Out-String)"
         if(!(Test-TargetResource @PSBoundParameters))
         {
             throw "Set-TargetResouce failed"
@@ -537,7 +581,16 @@ function Test-TargetResource
 
         [Parameter()]
         [System.String[]]
-        $RunbookWorkerServers
+        $RunbookWorkerServers,
+
+        [System.String]
+        $LogMsiInstall = $false,
+
+        [System.String]
+        $MsiLogPath = $env:LOCALAPPDATA + "\SystemCenter2016\SMA",
+
+        [System.String]
+        $MsiLogName = "SMAinstall.log"
     )
 
     $result = ((Get-TargetResource @PSBoundParameters).Ensure -eq $Ensure)
