@@ -27,8 +27,8 @@ Please check out common DSC Resources [contributing guidelines](https://github.c
 * **SourceFolder**: Folder within the source path containing the source files for installation.
 * **SetupCredential**: (Required) Credential to be used to perform the installation.
 
-###xSCSMAWebServiceServerSetup
-is used for installation of the SMA Web Service server, and has the following properties:
+### xSCSMAWebServiceServerSetup
+Used for installation of the SMA Web Service server.
 
 * **Ensure**: (Key) Ensures that the SCSCMA Web Service server components are **Present** or **Absent** on the machine.
 * **SourcePath**: (Required) UNC path to the root of the source files for installation.
