@@ -105,6 +105,10 @@ Imports runbook(s) into an SMA instance. The Workflow name is expected to match 
 
 ### Unreleased
 
+* Update appveyor.yml to use the default template.
+* Added default template files .codecov.yml, .gitattributes, and .gitignore, and
+  .vscode folder.
+
 ### 2.0.0.0
 
 * Added MSI install logging for MSFT_xSCSMARunbookWorkerServerSetup and MSFT_xSCSMARunbookWorkerServerSetup
