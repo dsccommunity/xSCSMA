@@ -80,6 +80,7 @@ try
                         Ensure = 'Present'
                     }
                     SetupExeReturn = $2016Version
+                    TestDefaultInstance = $true #Test for using the default SQL Instance name, which returns $null for default instance name
                 }
                 @{
                     Case = 'False when 2016 Product ID is found & Ensure is Absent'
@@ -112,10 +113,15 @@ try
             )
 
             It 'Returns <case>' -TestCases $testCases {
-                param ( $Case, $Params, $SetupExeReturn )
+                param ( $Case, $Params, $SetupExeReturn, $TestDefaultInstance )
 
                 $testParams = $defaultDesiredState.Params.Clone()
                 
+                if ($TestDefaultInstance)
+                {
+                    $testParams.SqlInstance = 'MSSQLServer' #Test for using the default SQL Instance name, which returns $null for default instance name
+                }
+
                 function Get-SmaRunbookWorkerDeployment {}
 
                 Mock -CommandName Get-Item -MockWith { $SetupExeReturn } -ParameterFilter { $Path -eq $pathToSetupExe }
@@ -131,7 +137,16 @@ try
                 } -ParameterFilter { $Class -eq 'win32_product' -and $Filter -eq "IdentifyingNumber='$($2016Version.ID)'" }
                 
                 Mock -CommandName Get-ItemProperty -MockWith { @{ DatabaseServerName = $testParams.SqlServer } } -ParameterFilter { $Name -eq 'DatabaseServerName' }
-                Mock -CommandName Get-ItemProperty -MockWith { @{ DatabaseServerInstance = $testParams.SqlInstance } } -ParameterFilter { $Name -eq 'DatabaseServerInstance' }
+                Mock -CommandName Get-ItemProperty -MockWith {
+                    if ($testParams.SqlInstance -eq 'MSSQLServer') # tests for default instance name, which returns $Null in the key for default instance name
+                    {
+                        $null
+                    }
+                    else
+                    {
+                        @{ DatabaseServerInstance = $testParams.SqlInstance } 
+                    }
+                } -ParameterFilter { $Name -eq 'DatabaseServerInstance' }
                 Mock -CommandName Get-ItemProperty -MockWith { @{ DatabaseName = $testParams.SqlDatabase } } -ParameterFilter { $Name -eq 'DatabaseName' }
                 Mock -CommandName Get-ItemProperty -MockWith { @{ InstallationFolder = $testParams.InstallFolder } } -ParameterFilter { $Name -eq 'InstallationFolder' }
                 Mock -CommandName Get-ItemProperty -MockWith { @{ IisSiteName = $testParams.SiteName } } -ParameterFilter { $Name -eq 'IisSiteName' }
@@ -153,7 +168,7 @@ try
                     $result = Get-TargetResource @testParams
 
                     # Test-TargetResource simply compares the passed in Ensure 
-                    # against the return from Get, so we test that here
+                    # against the return from Get, so we also test that here
                     $testResult = Test-TargetResource @testParams
                     
                     if ($testParams.Ensure -eq 'Absent')
