@@ -139,7 +139,7 @@ function Get-TargetResource
         {
             Import-Module -Name Microsoft.SystemCenter.ServiceManagementAutomation
         }
-        $RunbookWorkerServers = (Get-SmaRunbookWorkerDeployment -WebServiceEndpoint https://localhost -Port $WebServicePort).ComputerName
+        $RunbookWorkerServers = (Get-SmaRunbookWorkerDeployment -WebServiceEndpoint "https://$CertificateName" -Port $WebServicePort).ComputerName
 
         $returnValue = @{
             Ensure = "Present"
@@ -474,7 +474,7 @@ function Set-TargetResource
             {
                 $Workers += $RunbookWorkerServer.Split(".")[0]
             }
-            New-SmaRunbookWorkerDeployment -WebServiceEndpoint https://localhost -Port $WebServicePort -ComputerName $Workers
+            New-SmaRunbookWorkerDeployment -WebServiceEndpoint "https://$CertificateName" -Port $WebServicePort -ComputerName $Workers
         }
     }
 

@@ -135,7 +135,6 @@ try
                         return $false
                     }
                 } -ParameterFilter { $Class -eq 'win32_product' -and $Filter -eq "IdentifyingNumber='$($2016Version.ID)'" }
-                
                 Mock -CommandName Get-ItemProperty -MockWith { @{ DatabaseServerName = $testParams.SqlServer } } -ParameterFilter { $Name -eq 'DatabaseServerName' }
                 Mock -CommandName Get-ItemProperty -MockWith {
                     if ($testParams.SqlInstance -eq 'MSSQLServer') # tests for default instance name, which returns $Null in the key for default instance name
