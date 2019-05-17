@@ -145,7 +145,7 @@ function Get-TargetResource
             Ensure = "Present"
             SourcePath = $SourcePath
             SourceFolder = $SourceFolder
-            ApPoolUsername = $ApPoolUsername
+            ApPool = $ApPoolUsername
             AdminGroupMembers = $AdminGroupMembers
             SqlServer = $SqlServer
             SqlInstance = $SqlInstance
