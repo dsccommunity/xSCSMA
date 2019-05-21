@@ -139,7 +139,17 @@ function Get-TargetResource
         {
             Import-Module -Name Microsoft.SystemCenter.ServiceManagementAutomation
         }
-        $RunbookWorkerServers = (Get-SmaRunbookWorkerDeployment -WebServiceEndpoint "https://$CertificateName" -Port $WebServicePort).ComputerName
+
+        # In order to prevent a breaking change, we fall back to the default WSE
+        # if the function call to $CertificateName does not work
+        try
+        {
+            $RunbookWorkerServers = (Get-SmaRunbookWorkerDeployment -WebServiceEndpoint "https://$CertificateName" -Port $WebServicePort).ComputerName
+        }
+        catch
+        {
+            $RunbookWorkerServers = (Get-SmaRunbookWorkerDeployment -WebServiceEndpoint 'https://localhost' -Port $WebServicePort).ComputerName
+        }
 
         $returnValue = @{
             Ensure = "Present"
