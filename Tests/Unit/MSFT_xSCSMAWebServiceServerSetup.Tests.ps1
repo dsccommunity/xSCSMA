@@ -52,7 +52,6 @@ try
         $defaultDesiredState = @{
             Case = 'True when 2016 Product ID is found & Ensure is Present'
             Params = @{
-                SourcePath = "$TestDrive\SCSMA"
                 SourceFolder = 'SystemCenter2016'
                 SetupCredential = $credential
                 FirstWebServiceServer = $true
@@ -117,6 +116,9 @@ try
                 # Clone the default params, because we're only testing
                 # against $SQLInstance and $Ensure in the Get/Test functions
                 $testParams = $defaultDesiredState.Params.Clone()
+
+                # Populate SourcePath here for scoping reasons
+                $testParams.SourcePath = "$TestDrive\SCSMA"
 
                 function Get-SmaRunbookWorkerDeployment {
                     param ($WebServiceEndpoint)
