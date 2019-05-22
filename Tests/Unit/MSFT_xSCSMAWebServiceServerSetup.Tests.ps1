@@ -71,7 +71,7 @@ try
             SetupExeReturn = $2016Version
         }
 
-        Describe "$($script:dscResourceName)\Get&Test-TargetResource" -Tag 'Get' {
+        Describe "$($script:dscResourceName)\Get&Test-TargetResource" -Tag 'Get', 'Test' {
 
             $testCases = @(
                 $defaultDesiredState
@@ -107,6 +107,8 @@ try
                 @{
                     Case = 'Throw when unknown Product ID is found'
                     Ensure = 'Present'
+                    Result = $false
+                    Present = $false
                     SetupExeReturn = $unknownVersion
                 }
             )
@@ -125,7 +127,7 @@ try
                 }
             }
 
-            It '<Result> when resource is <Present> and Ensure is <Ensure> (<case>)' -TestCases $testCases {
+            It '<Result> when resource is <Present> and Ensure is <Ensure>' -TestCases $testCases {
                 param ( $Case, $Ensure, $Present, $Result, $SetupExeReturn, $SqlInstance )
 
                 # Populate the default paramset with the passed in Ensure key
