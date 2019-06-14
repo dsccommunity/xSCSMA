@@ -115,8 +115,10 @@ try
 
             BeforeEach {
 
-                # Clone the default params, because we're only testing
-                # against $SQLInstance and $Ensure in the Get/Test functions
+                <#
+                    Clone the default params, because we're only testing
+                    against $SQLInstance and $Ensure in the Get/Test functions
+                #>
                 $testParams = $defaultDesiredState.Params.Clone()
 
                 # Populate SourcePath here for scoping reasons
@@ -183,7 +185,7 @@ try
                     Mock -CommandName Get-SmaRunbookWorkerDeployment -MockWith { New-Object -TypeName PSCustomObject -Property @{ComputerName = $defaultDesiredState.Params.SqlServer} }
                 }
 
-                #Create the exe file
+                # Create the exe file
                 $pathToSetupExe = (Join-Path -Path (Join-Path -Path $testParams.SourcePath -ChildPath $testParams.SourceFolder) -ChildPath "\SMA\WebServiceSetup.exe")
                 New-Item -Path $pathToSetupExe -ItemType File -Value 'foo' -Force
 
@@ -192,15 +194,20 @@ try
                 {
                     $getResult = Get-TargetResource @testParams
 
-                    # Test-TargetResource simply compares the passed in Ensure
-                    # against the return from Get, so we also test that here
+                    <#
+                        Test-TargetResource simply compares the passed in Ensure
+                        against the return from Get, so we also test that here
+                    #>
                     $testResult = Test-TargetResource @testParams
 
                     # Remove properties not returned by Get/Test
                     $testParams.Remove('FirstWebServiceServer')
                     $testParams.Remove('SetupCredential')
 
-                    #Since Get alters the utility of the Ensure param to return state, we have to adjust the expected value here
+                    <#
+                        Since Get alters the utility of the Ensure param to return
+                        state, we have to adjust the expected value here
+                    #>
                     $testParams.Ensure = $getResult.Ensure
 
                     if ($getResult.Ensure -eq 'Absent')
@@ -241,12 +248,6 @@ try
                 {
                     { Get-TargetResource @testParams } | Should -Throw 'Unknown version of Service Management Automation!'
                 }
-            }
-        }
-
-        Describe "$($script:dscResourceName)\Set-TargetResource" {
-            It 'ToDo' {
-
             }
         }
     }
