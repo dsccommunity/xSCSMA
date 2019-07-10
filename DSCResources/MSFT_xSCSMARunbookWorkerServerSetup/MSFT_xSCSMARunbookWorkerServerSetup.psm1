@@ -82,7 +82,7 @@ function Get-TargetResource
         }
     }
 
-    if(Get-CimInstance -ClassName Win32reg_AddRemovePrograms -Filter "IdentifyingNumber ='$IdentifyingNumber'")
+    if($null -ne (Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\$IdentifyingNumber -ErrorAction SilentlyContinue))
     {
         $ServiceUsername = (Get-WmiObject -Class Win32_Service -Filter "Name ='rbsvc'").StartName
         $SqlServer = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\ServiceManagementAutomation\RunbookWorker" -Name "DatabaseServerName").DatabaseServerName
