@@ -46,7 +46,7 @@ function Get-TargetResource
         }
     }
 
-    if(Get-WmiObject -Class Win32_Product -filter "IdentifyingNumber ='$IdentifyingNumber'")
+    if(Get-CimInstance -ClassName Win32reg_AddRemovePrograms -filter "IdentifyingNumber ='$IdentifyingNumber'")
     {
         $returnValue = @{
             Ensure = "Present"

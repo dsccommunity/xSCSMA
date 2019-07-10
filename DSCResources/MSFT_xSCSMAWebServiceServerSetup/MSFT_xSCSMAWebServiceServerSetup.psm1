@@ -115,7 +115,7 @@ function Get-TargetResource
         }
     }
 
-    if(Get-WmiObject -Class win32_product -Filter "IdentifyingNumber='$IdentifyingNumber'")
+    if(Get-CimInstance -ClassName Win32reg_AddRemovePrograms -Filter "IdentifyingNumber='$IdentifyingNumber'")
     {
         $SqlServer = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\ServiceManagementAutomation\WebService" -Name "DatabaseServerName").DatabaseServerName
         Write-Verbose -Message "Get-TargetResource: Registry content DB: $SqlServer"
@@ -474,7 +474,7 @@ function Set-TargetResource
     WaitForWin32ProcessEnd -Path $Path -Arguments $Arguments -Credential $SetupCredential
 
     # Additional first Web Service Server "Present" actions
-    if(($Ensure -eq "Present") -and $FirstWebServiceServer -and (Get-WmiObject -Class Win32_Product -Filter "IdentifyingNumber ='$IdentifyingNumber'"))
+    if(($Ensure -eq "Present") -and $FirstWebServiceServer -and (Get-CimInstance -ClassName Win32reg_AddRemovePrograms -Filter "IdentifyingNumber ='$IdentifyingNumber'"))
     {
         if(!(Get-Module -Name Microsoft.SystemCenter.ServiceManagementAutomation))
         {
