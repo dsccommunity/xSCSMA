@@ -146,8 +146,14 @@ try
                 Mock -CommandName Get-Item -MockWith { $SetupExeReturn } -ParameterFilter { $Path -eq $pathToSetupExe }
 
                 # Setup tests for present and absent resource state
-                Mock -CommandName Get-WmiObject -MockWith { return $Present } `
-                    -ParameterFilter { $Class -eq 'win32_product' -and $Filter -eq "IdentifyingNumber='$($2016Version.ID)'" }
+                if ($present -eq $true)
+                {
+                    Mock -CommandName Get-ItemProperty -MockWith { return $Present }
+                }
+                if ($present -eq $false)
+                {
+                    Mock -CommandName Get-ItemProperty -MockWith { }
+                }
 
                 # Return the SQL Server hostname from the reg key
                 Mock -CommandName Get-ItemProperty -MockWith { @{ DatabaseServerName = $testParams.SqlServer } } `
