@@ -1,6 +1,6 @@
 @{
 # Version number of this module.
-moduleVersion = '2.0.0.0'
+moduleVersion = '2.1.0.0'
 
 # ID used to uniquely identify this module
 GUID = 'dada748e-cf1e-43ed-a4ff-3530c01afd53'
@@ -47,15 +47,11 @@ PrivateData = @{
         # IconUri = ''
 
         # ReleaseNotes of this module
-        ReleaseNotes = '* Added MSI install logging for MSFT_xSCSMARunbookWorkerServerSetup and MSFT_xSCSMARunbookWorkerServerSetup
-* Added missing -Port parameter argument for New-SmaRunbookWorkerDeployment in MSFT_xSCSMARunbookWorkerServerSetup
-* Fixed MSFT\_xSCSMARunbookWorkerServerSetup and MSFT\_xSCSMAWebServiceServerSetup using incorrect executable for version checking
-* Remove System Center Technical Preview 5 support. Close issue 18
-* Close issue 19 (always install self-signed certificate)
-* BREAKING CHANGE: change SendCEIPReports parameter to SendTelemetryReports. Close issue 20
-* Added description for new parameters at README.md
-* Fix return state of the current SendTelemetryReports
-* Fix syntax at source code
+        ReleaseNotes = '* Update appveyor.yml to use the default template.
+* Added default template files .codecov.yml, .gitattributes, and .gitignore, and
+  .vscode folder.
+* Closed issue 29 - Web bindings fail due to hardcoded WSE
+* Switched from Get-WmiObject Win32_Product to Get-ItemProperty for identifer number
 
 '
 
@@ -63,6 +59,7 @@ PrivateData = @{
 
 } # End of PrivateData hashtable
 }
+
 
 
 

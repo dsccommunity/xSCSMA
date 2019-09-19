@@ -46,7 +46,7 @@ function Get-TargetResource
         }
     }
 
-    if(Get-WmiObject -Class Win32_Product -filter "IdentifyingNumber ='$IdentifyingNumber'")
+    if($null -ne (Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\$IdentifyingNumber -ErrorAction SilentlyContinue))
     {
         $returnValue = @{
             Ensure = "Present"
